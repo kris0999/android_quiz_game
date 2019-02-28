@@ -1,26 +1,29 @@
 package com.android_quiz_game.utility;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.android_quiz_game.model.Csv;
 import com.example.anroid_quiz_game.R;
 
 import java.io.InputStream;
 import java.util.List;
 
 public class DBHelper extends SQLiteOpenHelper {
-    private static final String USER_INFO = "UserInfo";
-    private static final String HIGH_SCORE = "HighScore";
-    private static final String TRUE_OR_FALSE = "TrueOrFalse";
-    private static final String TALK_TO_ME = "TalkToMe";
-    private static final String THE_OTHER_ME = "TheOtherMe";
+    public static final String DB_NAME = "android_quiz_db";
+    public static final String USER_INFO = "UserInfo";
+    public static final String HIGH_SCORE = "HighScore";
+    public static final String TRUE_OR_FALSE = "TrueOrFalse";
+    public static final String TALK_TO_ME = "TalkToMe";
+    public static final String THE_OTHER_ME = "TheOtherMe";
 
     private Context _context;
 
-    public DBHelper(Context context, String databaseName, int databaseVersion) {
-        super(context, databaseName, null, databaseVersion);
+    public DBHelper(Context context, int databaseVersion) {
+        super(context, DB_NAME, null, databaseVersion);
         _context = context;
     }
 
@@ -35,14 +38,19 @@ public class DBHelper extends SQLiteOpenHelper {
 
         String userInfoTable = DBTableGenerator.Instance.createTable(USER_INFO,
                 CsvFile.Instance.read(userInfoCsvStream));
+        //Log.d("csv", userInfoTable);
         String trueOrFalseTable = DBTableGenerator.Instance.createTable(TRUE_OR_FALSE,
                 CsvFile.Instance.read(trueOrFalseCsvStream));
+        //Log.d("csv", trueOrFalseTable);
         String highScoreTable = DBTableGenerator.Instance.createTable(HIGH_SCORE,
                 CsvFile.Instance.read(highScoreCsvStream));
+        //Log.d("csv", highScoreTable);
         String talkToMe = DBTableGenerator.Instance.createTable(TALK_TO_ME,
                 CsvFile.Instance.read(talkToMeCsvStream));
+        //Log.d("csv", talkToMe);
         String theOtherMeTable = DBTableGenerator.Instance.createTable(THE_OTHER_ME,
                 CsvFile.Instance.read(theOtherMeCsvStream));
+        //Log.d("csv", theOtherMeTable);
 
         db.execSQL(userInfoTable);
         db.execSQL(highScoreTable);
@@ -59,5 +67,45 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TALK_TO_ME);
         db.execSQL("DROP TABLE IF EXISTS " + THE_OTHER_ME);
         onCreate(db);
+    }
+
+    public void preload()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues values = new ContentValues();
+
+        long newEntryCount = 0;
+
+        newEntryCount = insertToDB(db, values, R.raw.user_info, USER_INFO);
+        //Log.d("csv", String.format("new entries on table %s: %s", USER_INFO, newEntryCount));
+
+        newEntryCount = insertToDB(db, values, R.raw.high_score, HIGH_SCORE);
+        //Log.d("csv", String.format("new entries on table %s: %s", HIGH_SCORE, newEntryCount));
+
+        newEntryCount = insertToDB(db, values, R.raw.true_or_false, TRUE_OR_FALSE);
+        //Log.d("csv", String.format("new entries on table %s: %s", TRUE_OR_FALSE, newEntryCount));
+
+        newEntryCount = insertToDB(db, values, R.raw.talk_to_me, TALK_TO_ME);
+        //Log.d("csv", String.format("new entries on table %s: %s", TALK_TO_ME, newEntryCount));
+
+        newEntryCount = insertToDB(db, values, R.raw.the_other_me, THE_OTHER_ME);
+        //Log.d("csv", String.format("new entries on table %s: %s", THE_OTHER_ME, newEntryCount));
+    }
+
+    private long insertToDB(SQLiteDatabase db, ContentValues values, int resRawID, String table)
+    {
+        values = new ContentValues();
+
+        Csv csv = CsvFile.Instance.read(_context.getResources().openRawResource(resRawID));
+        for (int rows = 0; rows < csv.getContent().size(); rows++)
+        {
+            for (int colums = 0; colums < csv.getHeader().length; colums++) {
+                //Log.d("csv", String.format("%s: %s", csv.getHeader()[colums], csv.getContent().get(rows)[colums]));
+                values.put(csv.getHeader()[colums], csv.getContent().get(rows)[colums]);
+            }
+        }
+
+        //Log.d("csv", String.format("values: %s", values.size()));
+        return db.insert(table, null, values);
     }
 }
