@@ -1,0 +1,60 @@
+id	question	answer	choices	difficulty	character
+1	How old _______ you when you had your first girlfriend/boyfriend?	were	was#were#are#is	1	1
+2	My first proper girlfriend/boyfriend ______  probably when I was 14.	was	was#were#is	1	2
+3	What was his/her name?	#	#	1	1
+4	His/Her name ______ Murray.	was	was#were#is	1	2
+5	Murray. Wow. And did you meet him/her through school?	#	#	1	1
+6	He/She _____ to a different school; he/she ______ to a school near my school.	went	went#go#goes	1	2
+7	"OK, so how did you meet him?"	#	#	1	1
+8	We met through mutual friends. His/her friend knew my friend.	#	#	1	2
+9	"OK. So now what, so did you actually go on dates with him/her when you ________ 14?"	were	was#were#is#are	1	1
+10	"Yes, we ________."	did	did#do	1	2
+11	Wow. Where did you go?	#	#	1	1
+12	"We ________ to the cinema. We used to go and listen to music, watch bands."	went	go#went#goes	1	2
+13	"Oh, cool. So ________ your parents cool with you having a girlfriend/boyfriend?"	were	was#were#is#are	1	1
+14	"Yes, yes. They really  ______  him/her."	liked	likes#like#liked	1	2
+15	"Oh, that _____ cool."	was	was#is	1	1
+16	"OK, Kudo/Ran, we _____ going to talk about cooking."	are	was#were#is#are	2	1
+17	OK.	#	#	2	2
+18	"Now, you like to cook!"	#	#	2	1
+19	Yes.	#	#	2	2
+20	OK. What _____ you cook?	can	can#will#would#could	2	1
+21	"I can cook Manicotti, Tacos, and lots of food."	#	#	2	2
+22	OK. So what _____ Manicotti?	is	was#were#is#are	2	1
+23	Manicotti _____ a big noodle. It's hollow on the inside and you fill it with different cheeses and then you put red tomato sauce over the top of it and it's pretty good.	is	was#were#is#are	2	2
+24	So how do you ______ it?	make	makes#made#make	2	1
+25	"Well, you use Ricotta cheese, Mozzarella cheese, Parmesan Cheese, a little bit of salt, and basil and stuff and you _______ it all together in a pot and then you stuff it in the noodle, and you put the noodle in the pan and shove it in the oven for 35 minutes and let it cook."	mix	mix#mixed#mixes	2	2
+26	Yeah!	#	#	2	1
+27	And it's good.	#	#	2	2
+28	That sounds really good. How often do you make manicotti?	#	#	2	1
+29	"Oh, a couple ______ a month, probably."	times	time#times	2	2
+30	What ____ the secret to good manicotti?	is	was#were#are#is	2	1
+31	"You got to _______ it tasty, because if you add enough salt or Parmesan cheese then it doesn't taste as good. It just tastes like you’re eating cheese. That's it."	make	make#makes#made	2	2
+32	OK. Well I'll remember that. Thanks a lot Kudo/Ran.	#	#	2	1
+33	_______ welcome.	you're	your#you're#you are	2	2
+34	Hey Kudo/Ran! How are you?	#	#	3	1
+35	"Hey, I’m good. _________ about you?"	what	how#what#why	3	2
+36	I am fine. So in ___________ company are you working?	which	which#what#when	3	1
+37	I am working _________ Concentrix.	with	in#on#with	3	2
+38	What is your post?	#	#	3	1
+39	I am ________ the security department.	in	in#on	3	2
+40	That ________ great!	was	is#was#were	3	1
+41	Not that great.	#	#	3	2
+42	Why so?	#	#	3	1
+43	I am not that happy with_______ post.	this	this#these	3	2
+44	Which is the perfect post for you?	#	#	3	1
+45	I like manager post than security.	#	#	3	2
+46	Why don’t you try in some other company?	#	#	3	1
+47	I am planning __________ that.	to do	on doing#to do#doing#do	3	2
+48	There is an opening for the managerial post in FIS.	#	#	3	1
+49	_______you please arrange an interview for me in that company?	Could	Will#Would#Could#Can	3	2
+50	Sure. But you can also go directly for an interview	#	#	3	1
+51	"Ok, that’s great. At what time do I have to go?"	#	#	3	2
+52	You can go _____ around 10 in the morning.	at	by#at#on	3	1
+53	"Ok, I will be there at 10."	#	#	3	2
+54	Perfect!	#	#	3	1
+55	Please share your number.	#	#	3	2
+56	0981****87	#	#	3	1
+57	Can I take your name over the phone?	#	#	3	2
+58	"Yeah, sure, just _________ them that you got to know about it from me."	tell	say to#tell#talk to	3	1
+59	"Ok, thank you so much!"	#	#	3	2

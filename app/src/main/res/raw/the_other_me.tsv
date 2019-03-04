@@ -1,0 +1,37 @@
+id	rootWord	synonyms	difficulty	pairFlag
+1	CLEAN	Fairly#Immaculate#Cleanse#Detergent#Unstained#Spotless#Pristine#Fair#Antiseptic#Unsullied	1	1
+2	DIRTY	Nasty#Stained#Foul#Dusty#Smudged#Dingy#Bedraggled#Grimy#Grubby#Muddy	1	1
+3	DEFEND	Cover#Fence#Protect#Secure#Shield#Ward#Bulwark#Keep#Guard#Fend#Prevent	1	2
+4	ATTACK	Blitz#Aggression#AssaultAttempt#Charge#Offensive#Raid#Rush#Strike#Assail#Onslaught	1	2
+5	GOOD	Blessing#Acceptably#Well#Fine#Adequately#Rational#Commonsense#Valid#Wares#Profitable	1	3
+6	BAD	Bastard#Poor#Punk#Wrong#Lame#Bush#Evil#Sin#Immorality#Iniquity	1	3
+7	ARRIVE	Arrival#Coming#Incoming#Get in#Show up#Appear#Advent#Came#Come#Welcome	1	4
+8	DEPART	Leave#Die#Out#Bail#Exit#Departure#Move#Run#Quit#Gone	1	4
+9	ADMIT	Allow#Acknowledgement#Agree#Confess#Own#Let#Take#Accept#Avow#Endure	1	5
+10	DENY	Reject#Repudiate#Refute#Negative#Disown#Disallow#Contradict#Disaffirm#Negate#Disprove	1	5
+11	ALIKE	Same#Similar#Like#Matching#Also#Identical#Parallel#Equal#Duplicate#Correspondent	1	6
+12	DIFFERENT	Other#Diverse#Unlike#Distant#Disparate#Distinctive#Different#Varied#Assorted#Another	1	6
+13	ANCESTOR	Progenitor#Sire#Grandparent#Forbear#Origin#Primogenitor#Father#Forerunner#Prototype#Unbending#Upright	2	7
+14	DESCENDANT	Bowed#Decline#Droopy#Hanging#Inclining#Stooping#Sagging#Weeping#Nodding#Pendulous#Prosperity	2	7
+15	STRAIGHT	Direct#Plumb#Due#Straightway#Unbend#Uncurl#Straighten#Upright#Continuous	2	8
+16	ZIGZAG	Bend#Slew#Curve#Twist#Stagger#Winding#Crooked#Dodge#Weave#Arc	2	8
+17	RELIGIOUS	Spiritual#Belief#Devotional#Religion#Spirit#Prayers#Holy#Faithful#Sacred#Worship	2	9
+18	DEVILISH	Cruel#Evil#Sinister#Extreme#Insane#Satanic#Diabolic#Fiendish#Baroque#Lavish	2	9
+19	EXPENSIVE	Costly#Deluxe#Precious#Dear#Extravagant#Premium#Pricey#Luxury#Palatial#Sumptuous	2	10
+20	CHEAP	Ascetic#Austere#Bargain#Tawdry#Sleazy#Affordable#Popular#Budget#Basement#Prevalent	2	10
+21	DELICATE	Fragile#Frail#Weak#Slight#Flimsy#Insubstantial#Subtle#Refined#Airy#Exquisite	2	11
+22	STURDY	Strong#Powerful#Brawny#Strapping#Robust#Muscular#Hardy#Tough#Bitten#Stout	2	11
+23	DALLY	Slowly#Delay#Linger#Dawdle#Loiter#Low#Late#Disport#Recreate#Postpone	2	12
+24	RUSH	Hurry#Run#Dash#Sprint#Quickly#Charge#Full#Move#Hustle#Precipitate	2	12
+25	DENOUNCE	Condemn#Criticize#Censure#Accuse#Deplore#Deprecate#Blame#Reprehend#Reprobate#Anathematize	3	13
+26	COMMEND	Praise#Acclaim#Extol#Laud#Mention#Entrust#Consign#Transmit#Vest#Delegate	3	13
+27	DEPOSIT	Accretion#Accumulated#Dregs#Residue#Sediment#Layer#Lay down#Guarantee#Pledge#Dump	3	14
+28	WITHDRAW	Recede#Retire#Retreat#Pull out#Remove#Extract#Vacate#Depart#Take out#Moving	3	14
+29	CONTAMINATED	Impure#Dirty#Tainted#Unhygienic#Infected#Grimy#Harmful#Dangerous#Pollute#Foul	3	15
+30	PURIFY	Cleanse#Disinfect#Sanitize#Distil#Filter#Purge#Sanctify#Fair#Clear#Pristine	3	15
+31	CONSERVATIVE	Traditional#Conventional#Conformist#Old-Fashion#Moderate#Rightist#Discreet#Antique#Caution#Abstinent	3	16
+32	SPECULATIVE	Tentative#Approximate#Rough#Exploratory#Provisional#Thoughtful#Theoretical#Hypothetical#Guesses#Opinion	3	16
+33	JUBILANT	Overjoyed#Delighted#Delighted#Elated#Triumphant#Ecstatic#Thrilled#Euphoric#Proud#Rejoicing#Exultant#	3	17
+34	DISAPPOINT	Dissatisfied#Disillusioned#Saddened#Thwarted#Frustrated#Fail#Upset#Aggravate#Burden#Irritable	3	17
+35	CONVALESCE	Recover#Recuperate#Gain#Heal#Recoup#Rally#Restore#Revive#Response	3	18
+36	DETERIORATE	Worse#Decline#Depreciate#Weaken#Decay#Losses#Crash#Crumble#Devolve	3	18

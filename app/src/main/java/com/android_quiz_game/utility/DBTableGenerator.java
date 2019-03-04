@@ -7,7 +7,7 @@ import java.util.List;
 public class DBTableGenerator {
     public static DBTableGenerator Instance = new DBTableGenerator();
 
-    public String createTable(String tableName, Csv csvObject)
+    public String createTable(String tableName, Csv csvObject, boolean autoIncrement)
     {
         List<String[]> _csvContent = csvObject.getContent();
         String[] sampleData = _csvContent.get(0);
@@ -28,7 +28,12 @@ public class DBTableGenerator {
                 sqlCreate += String.format("%s %s)", csvObject.getHeader()[i], sqlDataType);
             }
             else if (i == 0) {
-                sqlCreate += String.format("%s INTEGER PRIMARY KEY, ", csvObject.getHeader()[i]);
+                if (autoIncrement) {
+                    sqlCreate += String.format("%s INTEGER PRIMARY KEY AUTOINCREMENT, ", csvObject.getHeader()[i]);
+                }
+                else {
+                    sqlCreate += String.format("%s INTEGER PRIMARY KEY, ", csvObject.getHeader()[i]);
+                }
             }
             else {
                 sqlCreate += String.format("%s %s, ", csvObject.getHeader()[i], sqlDataType);
