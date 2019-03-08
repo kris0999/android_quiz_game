@@ -2,15 +2,19 @@ package com.example.anroid_quiz_game;
 
 import android.content.ClipData;
 import android.content.ClipDescription;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,11 +28,29 @@ import java.util.List;
 
 public class TheOtherMeActivity extends AppCompatActivity implements View.OnDragListener, View.OnLongClickListener {
 
-    TextView word1TextView, word2TextView, choice1TextView, choice2TextView, choice3TextView, choice4TextView;
+    TextView word1TextView, word2TextView, choice1TextView, choice2TextView, choice3TextView, choice4TextView, scoreTextView, numQuestionsTextView,
+            timerTextView;
+    Button pauseButton;
+    ImageView levelImageView;
 
-    List<OtherQuestionPool> questionPool = new ArrayList<OtherQuestionPool>();
-    private int questionCounter;
-    private int totalQuestions;
+    List<OtherQuestionPool> qp1 = new ArrayList<OtherQuestionPool>();
+    List<OtherQuestionPool> qp2 = new ArrayList<OtherQuestionPool>();
+    List<OtherQuestionPool> qpm = new ArrayList<OtherQuestionPool>();
+    List<String> _choices = new ArrayList<String>();
+    List<String> _word1Choices = new ArrayList<String>();
+    List<String> _word2Choices = new ArrayList<String>();
+    OtherQuestionPool _questionPool = new OtherQuestionPool();
+
+
+    private int questionCounter = 0;
+    private int choicesCounter = 0;
+    private int totalQuestions = 0;
+    private int score = 0;
+    private int cdTotal = 11 * 1000;
+    private int cdInterval = 1000;
+    private int numCorrect;
+    private int difficultyFlag = 1;
+    CountDownTimer cdTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,16 +64,26 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
         choice2TextView = findViewById(R.id.tomChoice2TextView);
         choice3TextView = findViewById(R.id.tomChoice3TextView);
         choice4TextView = findViewById(R.id.tomChoice4TextView);
+        scoreTextView = findViewById(R.id.tomScoreTextView);
+        numQuestionsTextView = findViewById(R.id.tomNumQuestionTextView);
+        timerTextView = findViewById(R.id.tomTimerTextView);
+
+        // button
+        pauseButton = findViewById(R.id.tomPauseButton);
+
+        // imageview
+        levelImageView = findViewById(R.id.tomLevelImageView);
 
         choice1TextView.setTag("choice 1");
         choice2TextView.setTag("choice 2");
         choice3TextView.setTag("choice 3");
         choice4TextView.setTag("choice 4");
 
-        choice1TextView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-        choice2TextView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-        choice3TextView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        choice4TextView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        //choice1TextView.setBackground
+        //Color(getResources().getColor(R.color.colorAccent));
+        //choice2TextView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+        //choice3TextView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        //choice4TextView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
         choice1TextView.setOnLongClickListener(this);;
         choice2TextView.setOnLongClickListener(this);;
@@ -62,6 +94,16 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
         word1TextView.setTag("word 1");
         word2TextView.setOnDragListener(this);
         word2TextView.setTag("word 2");
+
+        DBHelper dbHelper = new DBHelper(this,1);
+        generateQuestionPool(1, dbHelper);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getChoices();
+        startTime();
     }
 
     @Override
@@ -120,6 +162,37 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
 
                 //Toast.makeText(this, "" + v.getTag(), Toast.LENGTH_SHORT).show();
 
+                if (v.getTag().toString().equalsIgnoreCase("word 1")) {
+                    if (checkAnswerWord1(dragData)) {
+                        updateScore();
+                        if (choice1TextView.getTag().toString().equalsIgnoreCase(dragData.toString())) {
+                            updateChoices(choice1TextView);
+                        } else if (choice2TextView.getTag().toString().equalsIgnoreCase(dragData.toString())) {
+                            updateChoices(choice2TextView);
+                        } else if (choice3TextView.getTag().toString().equalsIgnoreCase(dragData.toString())) {
+                            updateChoices(choice3TextView);
+                        } else if (choice4TextView.getTag().toString().equalsIgnoreCase(dragData.toString())) {
+                            updateChoices(choice4TextView);
+                        }
+                    }
+                }
+
+                if (v.getTag().toString().equalsIgnoreCase("word 2")) {
+                    if (checkAnswerWord2(dragData)) {
+                        updateScore();
+                        if (choice1TextView.getTag().toString().equalsIgnoreCase(dragData.toString())) {
+                            updateChoices(choice1TextView);
+                        } else if (choice2TextView.getTag().toString().equalsIgnoreCase(dragData.toString())) {
+                            updateChoices(choice2TextView);
+                        } else if (choice3TextView.getTag().toString().equalsIgnoreCase(dragData.toString())) {
+                            updateChoices(choice3TextView);
+                        } else if (choice4TextView.getTag().toString().equalsIgnoreCase(dragData.toString())) {
+                            updateChoices(choice4TextView);
+                        }
+                    }
+                }
+
+
                 //View vw = (View) event.getLocalState();
                 //ViewGroup owner = (ViewGroup) vw.getParent();
                 //owner.removeView(vw); //remove the dragged view
@@ -170,8 +243,76 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
         return true;
     }
 
-    private void checkAnswer(String rootWord, String synonym) {
+    private void startTime() {
+        cdTimer = new CountDownTimer(cdTotal, cdInterval ) {
 
+            @Override
+            public void onTick(long millisUntilFinished) {
+                cdTotal = cdTotal - cdInterval;
+                timerTextView.setText("" + ((cdTotal / cdInterval) - 1));
+            }
+
+            @Override
+            public void onFinish() {
+                gameFinished(1);
+            }
+        };
+        cdTimer.start();
+    }
+
+    private void gameFinished(int flag) {
+        // User finished the game
+        if (flag == 0) {
+            Toast.makeText(this,"FINISHED!", Toast.LENGTH_LONG).show();
+            Bundle bundle = new Bundle();
+            bundle.putInt("score", score);
+            bundle.putInt("difficulty", difficultyFlag);
+            bundle.putString("questions", "");
+            Intent intent = new Intent(this, GameResultsActivity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
+
+        // Time's up!
+        if (flag == 1) {
+            Toast.makeText(this,"GAME OVER!!", Toast.LENGTH_LONG).show();
+            Bundle bundle = new Bundle();
+            bundle.putInt("score", score);
+            bundle.putInt("difficulty", difficultyFlag);
+            bundle.putString("questions", "");
+            Intent intent = new Intent(this, GameResultsActivity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
+    }
+
+    private void stopTime() {
+        cdTimer.cancel();
+    }
+
+    private void updateScore() {
+        score++;
+        scoreTextView.setText("" + score);
+        numCorrect++;
+        numQuestionsTextView.setText("" + numCorrect + "/" + totalQuestions);
+    }
+
+    private boolean checkAnswerWord1(String value) {
+        for (String _s : _word1Choices) {
+            if (_s.equalsIgnoreCase(value)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean checkAnswerWord2(String value) {
+        for (String _s : _word2Choices) {
+            if (_s.equalsIgnoreCase(value)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void generateQuestionPool(int level, DBHelper dbHelper) {
@@ -184,6 +325,8 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
         };
         String selection = TheOtherMeHeader.DIFFICULTY + " = ? ";
         String[] selectionArgs = { Integer.toString(level) };
+        String sortOrder =
+                TheOtherMeHeader.ID + " ";
         Cursor cursor = db.query(
                 DBHelper.THE_OTHER_ME,
                 projection,
@@ -191,29 +334,95 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
                 selectionArgs,
                 null,
                 null,
-                null
+                sortOrder
         );
 
+        boolean pivot = false;
         while(cursor.moveToNext()) {
             int index;
-            OtherQuestionPool qp = new OtherQuestionPool();
-            index = cursor.getColumnIndexOrThrow(TheOtherMeHeader.ROOT_WORD);
-            qp.rootWord = cursor.getString(index);
-            index = cursor.getColumnIndexOrThrow(TheOtherMeHeader.SYNONYMS);
-            qp.rootWord = cursor.getString(index);
-            index = cursor.getColumnIndexOrThrow(TheOtherMeHeader.PAIR_FLAG);
-            qp.pairFlag = cursor.getInt(index);
-            questionPool.add(qp);
+            if (!pivot) {
+                OtherQuestionPool qp = new OtherQuestionPool();
+                index = cursor.getColumnIndexOrThrow(TheOtherMeHeader.ROOT_WORD);
+                qp.rootWord = cursor.getString(index);
+                index = cursor.getColumnIndexOrThrow(TheOtherMeHeader.SYNONYMS);
+                qp.correctAnswer = cursor.getString(index);
+                index = cursor.getColumnIndexOrThrow(TheOtherMeHeader.PAIR_FLAG);
+                qp.pairFlag = cursor.getInt(index);
+                qp1.add(qp);
+                pivot = true;
+            } else {
+                OtherQuestionPool qp = new OtherQuestionPool();
+                index = cursor.getColumnIndexOrThrow(TheOtherMeHeader.ROOT_WORD);
+                qp.rootWord = cursor.getString(index);
+                index = cursor.getColumnIndexOrThrow(TheOtherMeHeader.SYNONYMS);
+                qp.correctAnswer = cursor.getString(index);
+                index = cursor.getColumnIndexOrThrow(TheOtherMeHeader.PAIR_FLAG);
+                qp.pairFlag = cursor.getInt(index);
+                qp2.add(qp);
+                pivot = false;
+            }
             totalQuestions++;
         }
+
         totalQuestions = totalQuestions / 2;
         cursor.close();
-        Collections.shuffle(questionPool);
+        //Collections.shuffle(qpm);
+    }
+
+    private void getChoices() {
+        _questionPool = qp1.get(questionCounter);
+        String[] ss = _questionPool.correctAnswer.split("#");
+        for (String s : ss) {
+            _choices.add(s);
+            _word1Choices.add(s);
+        }
+        word1TextView.setText(_questionPool.rootWord);
+        _questionPool = qp2.get(questionCounter);
+        ss = _questionPool.correctAnswer.split("#");
+        for (String s : ss) {
+            _choices.add(s);
+            _word2Choices.add(s);
+        }
+        word2TextView.setText(_questionPool.rootWord);
+
+        choice1TextView.setVisibility(View.VISIBLE);
+        choice2TextView.setVisibility(View.VISIBLE);
+        choice3TextView.setVisibility(View.VISIBLE);
+        choice4TextView.setVisibility(View.VISIBLE);
+
+        updateChoices(choice1TextView);
+        updateChoices(choice2TextView);
+        updateChoices(choice3TextView);
+        updateChoices(choice4TextView);
+
+        Collections.shuffle(_choices);
+    }
+
+    private void updateChoices(TextView tv) {
+        try {
+            if (_choices.size() >= 1) {
+                _choices.remove(0);
+                tv.setText(_choices.get(0));
+                tv.setTag(_choices.get(0));
+            } else {
+                questionCounter++;
+                getChoices();
+            }
+        } catch(Exception e) {
+            tv.setVisibility(View.INVISIBLE);
+        }
     }
 }
 
 class OtherQuestionPool {
     String rootWord;
+    String correctAnswer;
+    int pairFlag;
+}
+
+class OtherQuestionPoolMaster {
+    String rootWord1;
+    String getRootWord2;
     String[] correctAnswer;
     int pairFlag;
 }

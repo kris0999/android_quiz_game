@@ -15,33 +15,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@mipmap/ic_launcher"
-            android:id="@+id/tofLevelImageView"/>
+            android:id="@+id/tomLevelImageView"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0"
             android:textAlignment="center"
-            android:id="@+id/tofScoreTextView"
+            android:id="@+id/tomScoreTextView"
             android:layout_weight="1"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0/0"
             android:textAlignment="center"
-            android:id="@+id/tofNumQuestionTextView"
+            android:id="@+id/tomNumQuestionTextView"
             android:layout_weight="1"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0:00"
             android:textAlignment="center"
-            android:id="@+id/tofTimerTextView"
+            android:id="@+id/tomTimerTextView"
             android:layout_weight="1"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="||"
-            android:id="@+id/tofPauseButton"/>
+            android:id="@+id/tomPauseButton"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
