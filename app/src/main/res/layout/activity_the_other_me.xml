@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TheOtherMeActivity"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/ic_launcher"
+            android:id="@+id/tofLevelImageView"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textAlignment="center"
+            android:id="@+id/tofScoreTextView"
+            android:layout_weight="1"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0/0"
+            android:textAlignment="center"
+            android:id="@+id/tofNumQuestionTextView"
+            android:layout_weight="1"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0:00"
+            android:textAlignment="center"
+            android:id="@+id/tofTimerTextView"
+            android:layout_weight="1"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="||"
+            android:id="@+id/tofPauseButton"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_weight="2">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/ic_launcher"
+            android:layout_marginRight="75dp"
+            android:text="Word 1"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:id="@+id/tomWord1TextView"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/ic_launcher"
+            android:layout_marginLeft="75dp"
+            android:text="Word 2"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:id="@+id/tomWord2TextView"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_weight="1">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="choice 1"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:layout_weight="1"
+            android:id="@+id/tomChoice1TextView"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="choice 2"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:layout_weight="1"
+            android:id="@+id/tomChoice2TextView"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_weight="1">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="choice 3"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:layout_weight="1"
+            android:id="@+id/tomChoice3TextView"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="choice 4"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:layout_weight="1"
+            android:id="@+id/tomChoice4TextView"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+    </LinearLayout>
+</LinearLayout>

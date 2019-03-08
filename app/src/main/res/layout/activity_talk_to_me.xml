@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TalkToMeActivity">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_launcher"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textAlignment="center"
+                android:id="@+id/ttmScoreTextView"
+                android:layout_weight="1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0/0"
+                android:textAlignment="center"
+                android:id="@+id/ttmNumQuestionTextView"
+                android:layout_weight="1"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="||"
+                android:id="@+id/ttmPauseButton"/>
+        </TableRow>
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_span="3"
+                android:layout_weight="1">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentBottom="true"
+                    android:background="@mipmap/ic_launcher"
+                    android:id="@+id/ttmCharacter1ImageView"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginEnd="0dp"
+                    android:background="@mipmap/ic_launcher"
+                    android:id="@+id/ttmCharacter2ImageView"/>
+
+                <TextView
+                    android:layout_width="400dp"
+                    android:layout_height="200dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:text=""
+                    android:id="@+id/ttmBaloonTextView"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="30dp">
+                    <TextView
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="Choice 1"
+                        android:layout_marginBottom="10dp"
+                        android:id="@+id/ttmChoice1TextView"/>
+
+                    <TextView
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="Choice 2"
+                        android:layout_marginBottom="10dp"
+                        android:id="@+id/ttmChoice2TextView"/>
+
+                    <TextView
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="Choice 3"
+                        android:id="@+id/ttmChoice3TextView"/>
+                </LinearLayout>
+            </RelativeLayout>
+        </TableRow>
+    </TableLayout>
+</RelativeLayout>

@@ -18,7 +18,7 @@ public class CsvFile {
         try {
             String csvLine;
             while ((csvLine = reader.readLine()) != null) {
-                String[] row = csvLine.split(",");
+                String[] row = csvLine.split("\t");
                 resultList.add(row);
             }
         }

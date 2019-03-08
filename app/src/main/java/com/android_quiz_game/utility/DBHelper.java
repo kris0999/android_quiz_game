@@ -100,6 +100,16 @@ public class DBHelper extends SQLiteOpenHelper {
         Csv csv = CsvFile.Instance.read(_context.getResources().openRawResource(resRawID));
         for (int rows = 0; rows < csv.getContent().size(); rows++)
         {
+            if (table.equals(TALK_TO_ME))
+            {
+                Log.d("csv", String.format("talk to me header: %s", csv.getHeader().length));
+
+                for (int k = 0; k < csv.getHeader().length; k++)
+                {
+                    Log.d("csv", String.format("Talk to me header column: [%s]", csv.getHeader()[k], csv.getContent().get(rows)[k]));
+                }
+            }
+
             for (int colums = 1; colums < csv.getHeader().length; colums++) {
                 Log.d("csv", String.format("%s: %s", csv.getHeader()[colums], csv.getContent().get(rows)[colums]));
 
@@ -110,3 +120,4 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 }
+
