@@ -1,7 +1,9 @@
 package com.example.anroid_quiz_game;
 
+import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipDescription;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,6 +17,8 @@ import android.view.DragEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +45,7 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
     List<String> _word2Choices = new ArrayList<String>();
     OtherQuestionPool _questionPool = new OtherQuestionPool();
 
+    final Context context = this;
 
     private int questionCounter = 0;
     private int choicesCounter = 0;
@@ -97,6 +102,40 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
 
         DBHelper dbHelper = new DBHelper(this,1);
         generateQuestionPool(1, dbHelper);
+
+        // pause
+        pauseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopTime();
+                final Dialog dialog = new Dialog(context);
+                dialog.setContentView(R.layout.pause_game);
+                dialog.setCanceledOnTouchOutside(false);
+                final Button resumeButton, newButton, exitButton, musicButton;
+                resumeButton = dialog.findViewById(R.id.pgResumeButton);
+                newButton = dialog.findViewById(R.id.pgNewButton);
+                exitButton = dialog.findViewById(R.id.pgExitButton);
+                musicButton = dialog.findViewById(R.id.pgMusicButton);
+                resumeButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        startTime();
+                    }
+                });
+                dialog.show();
+                musicButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(musicButton.getText().toString().equalsIgnoreCase("music off")) {
+                            musicButton.setText("Music On");
+                        } else {
+                            musicButton.setText("Music Off");
+                        }
+                    }
+                });
+            }
+        });
     }
 
     @Override

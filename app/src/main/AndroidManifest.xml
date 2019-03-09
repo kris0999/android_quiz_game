@@ -11,6 +11,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".TrueOrFalseActivity"
             android:screenOrientation="userLandscape">
+
         </activity>
         <activity android:name=".TheOtherMeActivity"
             android:screenOrientation="userLandscape">
