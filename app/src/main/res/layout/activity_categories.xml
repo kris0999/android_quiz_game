@@ -18,7 +18,9 @@
             android:paddingBottom="20dp"
             android:paddingTop="20dp"
             android:text="True or False"
-            android:id="@+id/catTFButton"/>
+            android:id="@+id/catTFButton"
+            android:tag="tf"
+            android:onClick="launchCategory_Click"/>
 
         <Button
             android:layout_width="match_parent"
@@ -28,7 +30,9 @@
             android:text="The Other Me"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
-            android:id="@+id/catOtherButton"/>
+            android:id="@+id/catOtherButton"
+            android:tag="tom"
+            android:onClick="launchCategory_Click"/>
 
         <Button
             android:layout_width="match_parent"
@@ -36,8 +40,8 @@
             android:paddingBottom="20dp"
             android:paddingTop="20dp"
             android:text="Talk To Me"
-            android:id="@+id/catTalkButton"/>
-
+            android:id="@+id/catTalkButton"
+            android:tag="ttm"
+            android:onClick="launchCategory_Click"/>
     </LinearLayout>
-
 </RelativeLayout>

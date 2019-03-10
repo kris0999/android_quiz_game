@@ -18,7 +18,9 @@
             android:paddingBottom="20dp"
             android:paddingTop="20dp"
             android:text="Easy"
-            android:id="@+id/talkEasyButton"/>
+            android:id="@+id/talkEasyButton"
+            android:tag="easy"
+            android:onClick="launchLevel_Click"/>
 
         <Button
             android:layout_width="match_parent"
@@ -28,7 +30,9 @@
             android:text="Average"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
-            android:id="@+id/talkAverageButton"/>
+            android:id="@+id/talkAverageButton"
+            android:tag="ave"
+            android:onClick="launchLevel_Click"/>
 
         <Button
             android:layout_width="match_parent"
@@ -36,7 +40,8 @@
             android:paddingBottom="20dp"
             android:paddingTop="20dp"
             android:text="Difficult"
-            android:id="@+id/talkDifficultButton"/>
-
+            android:id="@+id/talkDifficultButton"
+            android:tag="diff"
+            android:onClick="launchLevel_Click"/>
     </LinearLayout>
 </RelativeLayout>

@@ -43,6 +43,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_span="3"
+                android:onClick="ttmNextButton_Click"
+                android:id="@+id/ttmViewPanel"
                 android:layout_weight="1">
                 <ImageView
                     android:layout_width="wrap_content"
@@ -62,14 +64,14 @@
                     android:id="@+id/ttmCharacter2ImageView"/>
 
                 <TextView
+                    android:id="@+id/ttmBaloonTextView"
                     android:layout_width="400dp"
                     android:layout_height="200dp"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
                     android:gravity="center"
-                    android:textAlignment="center"
-                    android:text=""
-                    android:id="@+id/ttmBaloonTextView"/>
+                    android:text="sample question"
+                    android:textAlignment="center" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -78,19 +80,22 @@
                     android:layout_alignParentBottom="true"
                     android:orientation="vertical"
                     android:layout_marginBottom="30dp">
+
                     <TextView
-                        android:layout_width="300dp"
+                        android:id="@+id/ttmChoice1TextView"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
-                        android:gravity="center"
-                        android:textAlignment="center"
-                        android:text="Choice 1"
                         android:layout_marginBottom="10dp"
-                        android:id="@+id/ttmChoice1TextView"/>
+                        android:gravity="center"
+                        android:text="Choice 1"
+                        android:clickable="true"
+                        android:onClick="ttmChoicesButton_Click"
+                        android:textAlignment="center" />
 
                     <TextView
-                        android:layout_width="300dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
@@ -98,17 +103,34 @@
                         android:textAlignment="center"
                         android:text="Choice 2"
                         android:layout_marginBottom="10dp"
+                        android:clickable="true"
+                        android:onClick="ttmChoicesButton_Click"
                         android:id="@+id/ttmChoice2TextView"/>
 
                     <TextView
-                        android:layout_width="300dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
                         android:gravity="center"
                         android:textAlignment="center"
                         android:text="Choice 3"
+                        android:layout_marginBottom="10dp"
+                        android:clickable="true"
+                        android:onClick="ttmChoicesButton_Click"
                         android:id="@+id/ttmChoice3TextView"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="Choice 4"
+                        android:clickable="true"
+                        android:onClick="ttmChoicesButton_Click"
+                        android:id="@+id/ttmChoice4TextView"/>
                 </LinearLayout>
             </RelativeLayout>
         </TableRow>

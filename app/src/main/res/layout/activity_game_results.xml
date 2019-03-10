@@ -89,7 +89,8 @@
                 android:id="@+id/resultsMenuButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Menu" />
+                android:text="Menu"
+                android:onClick="resultMenuButton_Click"/>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
