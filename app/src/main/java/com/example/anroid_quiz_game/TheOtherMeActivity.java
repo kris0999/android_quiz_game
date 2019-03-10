@@ -35,7 +35,7 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
     TextView word1TextView, word2TextView, choice1TextView, choice2TextView, choice3TextView, choice4TextView, scoreTextView, numQuestionsTextView,
             timerTextView;
     Button pauseButton;
-    ImageView levelImageView;
+    ImageView levelImageView, resultImageView;
 
     List<OtherQuestionPool> qp1 = new ArrayList<OtherQuestionPool>();
     List<OtherQuestionPool> qp2 = new ArrayList<OtherQuestionPool>();
@@ -78,6 +78,7 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
 
         // imageview
         levelImageView = findViewById(R.id.tomLevelImageView);
+        resultImageView = findViewById(R.id.tomResultImageView);
 
         choice1TextView.setTag("choice 1");
         choice2TextView.setTag("choice 2");
@@ -136,6 +137,8 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
                 });
             }
         });
+
+        setTimerTotal();
     }
 
     @Override
@@ -203,7 +206,7 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
 
                 if (v.getTag().toString().equalsIgnoreCase("word 1")) {
                     if (checkAnswerWord1(dragData)) {
-                        updateScore();
+                        updateScore(0);
                         if (choice1TextView.getTag().toString().equalsIgnoreCase(dragData.toString())) {
                             updateChoices(choice1TextView);
                         } else if (choice2TextView.getTag().toString().equalsIgnoreCase(dragData.toString())) {
@@ -218,7 +221,7 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
 
                 if (v.getTag().toString().equalsIgnoreCase("word 2")) {
                     if (checkAnswerWord2(dragData)) {
-                        updateScore();
+                        updateScore(0);
                         if (choice1TextView.getTag().toString().equalsIgnoreCase(dragData.toString())) {
                             updateChoices(choice1TextView);
                         } else if (choice2TextView.getTag().toString().equalsIgnoreCase(dragData.toString())) {
@@ -256,7 +259,7 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
                 return true;
             // An unknown action type was received.
             default:
-                Log.d("DragDrop Example", "Unknown action type received by OnDragListener.");
+                Log.d("DragDrop ", "Unknown action type received by OnDragListener.");
                 break;
         }
         return false;
@@ -293,11 +296,24 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
 
             @Override
             public void onFinish() {
-                gameFinished(1);
+                stopTime();
+                getChoices();
             }
         };
         cdTimer.start();
     }
+
+    private void setTimerTotal() {
+        // Specify in seconds
+        if (difficultyFlag == 1) {
+            cdTotal = 17 * 1000;
+        } else if (difficultyFlag == 2) {
+            cdTotal = 15 * 1000;
+        } else if (difficultyFlag == 3)  {
+            cdTotal = 12 * 1000;
+        }
+    }
+
 
     private void gameFinished(int flag) {
         // User finished the game
@@ -329,10 +345,12 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
         cdTimer.cancel();
     }
 
-    private void updateScore() {
-        score++;
-        scoreTextView.setText("" + score);
-        numCorrect++;
+    private void updateScore(int flag) {
+        if(flag == 0) {
+            score = score + 100;
+            scoreTextView.setText("" + score);
+            numCorrect++;
+        }
         numQuestionsTextView.setText("" + numCorrect + "/" + totalQuestions);
     }
 
@@ -406,9 +424,11 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
         totalQuestions = totalQuestions / 2;
         cursor.close();
         //Collections.shuffle(qpm);
+
     }
 
     private void getChoices() {
+        Collections.shuffle(qp1);
         _questionPool = qp1.get(questionCounter);
         String[] ss = _questionPool.correctAnswer.split("#");
         for (String s : ss) {
@@ -416,13 +436,17 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
             _word1Choices.add(s);
         }
         word1TextView.setText(_questionPool.rootWord);
-        _questionPool = qp2.get(questionCounter);
-        ss = _questionPool.correctAnswer.split("#");
-        for (String s : ss) {
-            _choices.add(s);
-            _word2Choices.add(s);
+        for( OtherQuestionPool _qp : qp2) {
+            if(_questionPool.pairFlag == _qp.pairFlag) {
+                //_questionPool = qp2.get(questionCounter);
+                ss = _qp.correctAnswer.split("#");
+                for (String s : ss) {
+                    _choices.add(s);
+                    _word2Choices.add(s);
+                }
+                word2TextView.setText(_qp.rootWord);
+            }
         }
-        word2TextView.setText(_questionPool.rootWord);
 
         choice1TextView.setVisibility(View.VISIBLE);
         choice2TextView.setVisibility(View.VISIBLE);
@@ -435,6 +459,10 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
         updateChoices(choice4TextView);
 
         Collections.shuffle(_choices);
+
+        setTimerTotal();
+        startTime();
+        updateScore(1);
     }
 
     private void updateChoices(TextView tv) {

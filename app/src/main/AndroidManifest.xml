@@ -11,14 +11,13 @@
         android:theme="@style/AppTheme">
         <activity android:name=".RegistrationActivity"
             android:screenOrientation="userLandscape">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
 
         <activity android:name=".TrueOrFalseActivity"
-            android:screenOrientation="userLandscape"/>
+            android:screenOrientation="userLandscape">
+
+        </activity>
 
         <activity android:name=".TFLevelActivity"
             android:screenOrientation="userLandscape"/>
@@ -39,7 +38,12 @@
             android:screenOrientation="userLandscape"/>
 
         <activity android:name=".TheOtherMeActivity"
-            android:screenOrientation="userLandscape"/>
+            android:screenOrientation="userLandscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity android:name=".TalkToMeActivity"
             android:screenOrientation="userLandscape"/>
