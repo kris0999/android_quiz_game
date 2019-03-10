@@ -9,10 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TrueOrFalseActivity"
-            android:screenOrientation="userLandscape">
-        </activity>
-        <activity android:name=".TheOtherMeActivity"
+        <activity android:name=".RegistrationActivity"
             android:screenOrientation="userLandscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,14 +17,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".TrueOrFalseActivity"
+            android:screenOrientation="userLandscape">
+        </activity>
+
         <activity android:name=".TFLevelActivity" />
-        <activity android:name=".TalkToMeActivity" />
         <activity android:name=".TalkLevelActivity" />
-        <activity android:name=".RegistrationActivity" />
+        <activity android:name=".CategoriesActivity" />
         <activity android:name=".OtherLevelActivity" />
         <activity android:name=".HighScoresActivity" />
         <activity android:name=".GameResultsActivity" />
-        <activity android:name=".CategoriesActivity" />
+        <activity android:name=".TheOtherMeActivity"/>
+        <activity android:name=".TalkToMeActivity" />
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package com.example.anroid_quiz_game;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -53,5 +54,24 @@ public class GameResultsActivity extends AppCompatActivity {
         }
         scoreTextView.setText("" + bundle.getInt("score"));
         difficultyFlag = bundle.getInt("difficulty");
+        highScoreTextView.setText(String.format("%s", bundle.getInt("highScore")));
+    }
+
+    public void resultMenuButton_Click(View view) {
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        BackToCategory();
+    }
+
+    private void BackToCategory()
+    {
+        Intent intent = new Intent(this, CategoriesActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
