@@ -6,9 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.android_quiz_game.model.Csv;
+import com.android_quiz_game.model.DataStateHeader;
 import com.android_quiz_game.model.HighScore;
 import com.android_quiz_game.model.HighScoreHeader;
 import com.android_quiz_game.model.UserInfo;
@@ -16,7 +18,10 @@ import com.android_quiz_game.model.UserInfoHeader;
 import com.example.anroid_quiz_game.R;
 
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class DBHelper extends SQLiteOpenHelper {
@@ -26,6 +31,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String TRUE_OR_FALSE = "TrueOrFalse";
     public static final String TALK_TO_ME = "TalkToMe";
     public static final String THE_OTHER_ME = "TheOtherMe";
+    public static final String DATA_STATE = "DataState";
 
     private Context _context;
 
@@ -45,25 +51,32 @@ public class DBHelper extends SQLiteOpenHelper {
 
         String userInfoTable = DBTableGenerator.Instance.createTable(USER_INFO,
                 CsvFile.Instance.read(userInfoCsvStream), true);
-        Log.d("csv", userInfoTable);
+        Log.d("db table", userInfoTable);
         String trueOrFalseTable = DBTableGenerator.Instance.createTable(TRUE_OR_FALSE,
                 CsvFile.Instance.read(trueOrFalseCsvStream), true);
-        Log.d("csv", trueOrFalseTable);
+        Log.d("db table", trueOrFalseTable);
         String highScoreTable = DBTableGenerator.Instance.createTable(HIGH_SCORE,
                 CsvFile.Instance.read(highScoreCsvStream), true);
-        Log.d("csv", highScoreTable);
+        Log.d("db table", highScoreTable);
         String talkToMe = DBTableGenerator.Instance.createTable(TALK_TO_ME,
                 CsvFile.Instance.read(talkToMeCsvStream), true);
-        Log.d("csv", talkToMe);
+        Log.d("db table", talkToMe);
         String theOtherMeTable = DBTableGenerator.Instance.createTable(THE_OTHER_ME,
                 CsvFile.Instance.read(theOtherMeCsvStream), true);
-        Log.d("csv", theOtherMeTable);
+        Log.d("db table", theOtherMeTable);
+
+        String dataState = String.format("CREATE TABLE IF NOT EXISTS %s (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "%s INTEGER, " +
+                "%s TIMESTAMP)", DATA_STATE, DataStateHeader.PRELOADED, DataStateHeader.TIME_STAMP);
+        Log.d("db table", dataState);
 
         db.execSQL(userInfoTable);
         db.execSQL(highScoreTable);
         db.execSQL(trueOrFalseTable);
         db.execSQL(talkToMe);
         db.execSQL(theOtherMeTable);
+        db.execSQL(dataState);
     }
 
     @Override
@@ -79,6 +92,20 @@ public class DBHelper extends SQLiteOpenHelper {
     public void preload()
     {
         SQLiteDatabase db = this.getReadableDatabase();
+
+        DataState dataState = getDataState(db);
+
+        if (dataState != null) {
+            if (dataState.preloaded) {
+                db.close();
+                return;
+            }
+        }
+        else {
+            dataState = new DataState();
+        }
+
+
         ContentValues values = new ContentValues();
 
         //long newEntryCount = 0;
@@ -97,10 +124,15 @@ public class DBHelper extends SQLiteOpenHelper {
 
         insertToDB(db, values, R.raw.the_other_me, THE_OTHER_ME);
         //Log.d("csv", String.format("new entries on table %s: %s", THE_OTHER_ME, newEntryCount));
+
+        dataState.preloaded = true;
+        dataState.timeStamp = new Date().getTime();
+        setDataState(dataState, db);
+
         db.close();
     }
 
-    private void insertToDB(SQLiteDatabase db, ContentValues values, int resRawID, String table)
+    private void insertToDB(SQLiteDatabase writableDB, ContentValues values, int resRawID, String table)
     {
         values = new ContentValues();
 
@@ -108,12 +140,12 @@ public class DBHelper extends SQLiteOpenHelper {
         for (int rows = 0; rows < csv.getContent().size(); rows++)
         {
             for (int colums = 1; colums < csv.getHeader().length; colums++) {
-                Log.d("csv", String.format("%s: %s", csv.getHeader()[colums], csv.getContent().get(rows)[colums]));
+                //Log.d("csv", String.format("%s: %s", csv.getHeader()[colums], csv.getContent().get(rows)[colums]));
 
                 values.put(csv.getHeader()[colums], csv.getContent().get(rows)[colums]);
             }
 
-            db.insert(table, null, values);
+            writableDB.insert(table, null, values);
         }
     }
 
@@ -171,6 +203,99 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(UserInfoHeader.CHARACTER_FLAG, 1);
 
         writableDB.insert(USER_INFO, null, contentValues);
+    }
+
+    public static UserInfo getUser(SQLiteDatabase readableDB)
+    {
+        List<UserInfo> users = new ArrayList();
+        Cursor c = readableDB.query(DBHelper.USER_INFO,
+                new String[] { UserInfoHeader.NAME, UserInfoHeader.GENDER, UserInfoHeader.AGE,
+                        UserInfoHeader.TRUE_OR_FALSE_LEVEL, UserInfoHeader.TALK_TO_ME_LEVEL,
+                        UserInfoHeader.THE_OTHER_ME_LEVEL},
+                null,
+                null,
+                null,
+                null,
+                null);
+
+        while(c.moveToNext()) {
+            UserInfo userInfo = new UserInfo();
+            userInfo.name = c.getString(c.getColumnIndexOrThrow(UserInfoHeader.NAME));
+            userInfo.age = (byte)c.getInt(c.getColumnIndexOrThrow(UserInfoHeader.AGE));
+            userInfo.gender = (byte)c.getInt(c.getColumnIndexOrThrow(UserInfoHeader.GENDER));
+            userInfo.trueOrFalseLevel = (byte)c.getInt(c.getColumnIndexOrThrow(UserInfoHeader.TRUE_OR_FALSE_LEVEL));
+            userInfo.theOtherMeLevel = (byte)c.getInt(c.getColumnIndexOrThrow(UserInfoHeader.THE_OTHER_ME_LEVEL));
+            userInfo.talkToMeLevel = (byte)c.getInt(c.getColumnIndexOrThrow(UserInfoHeader.TALK_TO_ME_LEVEL));
+            users.add(userInfo);
+        }
+        c.close();
+
+        Log.d("user info", String.format("users: %s", users.size()));
+
+        if (users.size() > 0)
+            return users.get(0);
+        else
+            return null;
+    }
+
+    private DataState getDataState(SQLiteDatabase readableDB)
+    {
+        List<DataState> dataStateCollection = new ArrayList();
+        Cursor c = readableDB.query(DATA_STATE,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
+
+        while (c.moveToNext()) {
+            DataState dataState = new DataState();
+            int preloaded = c.getInt(c.getColumnIndexOrThrow(DataStateHeader.PRELOADED));
+            dataState.preloaded = convertToBoolean(preloaded);
+            dataState.timeStamp = c.getLong(c.getColumnIndexOrThrow(DataStateHeader.TIME_STAMP));
+            dataStateCollection.add(dataState);
+        }
+        c.close();
+
+        if (dataStateCollection.size() > 0)
+            return dataStateCollection.get(0);
+        else
+            return null;
+    }
+
+    private void setDataState(DataState dataState, SQLiteDatabase writebleDB)
+    {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DataStateHeader.PRELOADED, dataState.toPreloadedInt());
+        contentValues.put(DataStateHeader.TIME_STAMP, dataState.timeStamp);
+        long insertedRows = writebleDB.insert(DATA_STATE, null, contentValues);
+        Log.d("sql table", String.format("data state rows inserted: %s", insertedRows));
+    }
+
+    private boolean convertToBoolean(int state)
+    {
+        switch (state) {
+            case 0:
+                return false;
+            case 1:
+                return true;
+            default:
+                return false;
+        }
+    }
+}
+
+class DataState
+{
+    public boolean preloaded;
+    public long timeStamp;
+    public int toPreloadedInt()
+    {
+        if (preloaded)
+            return 1;
+        else
+            return 0;
     }
 }
 

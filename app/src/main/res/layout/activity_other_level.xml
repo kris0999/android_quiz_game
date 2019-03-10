@@ -18,6 +18,8 @@
             android:paddingBottom="20dp"
             android:paddingTop="20dp"
             android:text="Easy"
+            android:tag="easy"
+            android:onClick="launchLevel_Click"
             android:id="@+id/otherEasyButton"/>
 
         <Button
@@ -26,6 +28,8 @@
             android:paddingBottom="20dp"
             android:paddingTop="20dp"
             android:text="Average"
+            android:tag="ave"
+            android:onClick="launchLevel_Click"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
             android:id="@+id/otherAverageButton"/>
@@ -36,6 +40,8 @@
             android:paddingBottom="20dp"
             android:paddingTop="20dp"
             android:text="Difficult"
+            android:tag="diff"
+            android:onClick="launchLevel_Click"
             android:id="@+id/otherDifficultButton"/>
 
     </LinearLayout>

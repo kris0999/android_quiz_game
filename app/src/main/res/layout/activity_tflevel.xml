@@ -18,6 +18,8 @@
             android:paddingBottom="20dp"
             android:paddingTop="20dp"
             android:text="Easy"
+            android:tag="easy"
+            android:onClick="launchLevel_Click"
             android:id="@+id/tfEasyButton"/>
 
         <Button
@@ -26,8 +28,10 @@
             android:paddingBottom="20dp"
             android:paddingTop="20dp"
             android:text="Average"
+            android:tag="ave"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
+            android:onClick="launchLevel_Click"
             android:id="@+id/tfAverageButton"/>
 
         <Button
@@ -36,6 +40,8 @@
             android:paddingBottom="20dp"
             android:paddingTop="20dp"
             android:text="Difficult"
+            android:tag="diff"
+            android:onClick="launchLevel_Click"
             android:id="@+id/tfDifficultButton"/>
 
     </LinearLayout>

@@ -40,7 +40,7 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         _dbHelper = new DBHelper(this, 1);
 
-        _userInfo = getUser();
+        _userInfo = DBHelper.getUser(_dbHelper.getReadableDatabase());
 
         if (_userInfo == null) {
             initComponents();
@@ -83,7 +83,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         _dbHelper = new DBHelper(this, 1);
 
-        _userInfo = getUser();
+        _userInfo = DBHelper.getUser(_dbHelper.getReadableDatabase());
 
         if (_userInfo == null) {
             initComponents();
@@ -95,7 +95,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     public void saveButton_Click(View view) {
-        int age = Integer.parseInt(ageView.getText().toString().trim());
+        int age = parseAge(ageView.getText().toString().trim());
         _userInfo.name = nameView.getText().toString().trim();
 
         _userInfo.name = replaceMultiSpaces(_userInfo.name);
@@ -267,39 +267,6 @@ public class RegistrationActivity extends AppCompatActivity {
         Intent intent = new Intent(this, CategoriesActivity.class);
         startActivity(intent);
         finish();
-    }
-
-    private UserInfo getUser()
-    {
-        List<UserInfo> users = new ArrayList();
-        Cursor c = _dbHelper.getReadableDatabase().query(DBHelper.USER_INFO,
-                new String[] { UserInfoHeader.NAME, UserInfoHeader.GENDER, UserInfoHeader.AGE,
-                UserInfoHeader.TRUE_OR_FALSE_LEVEL, UserInfoHeader.TALK_TO_ME_LEVEL,
-                UserInfoHeader.THE_OTHER_ME_LEVEL},
-                null,
-                null,
-                null,
-                null,
-                null);
-
-        while(c.moveToNext()) {
-            UserInfo userInfo = new UserInfo();
-            userInfo.name = c.getString(c.getColumnIndexOrThrow(UserInfoHeader.NAME));
-            userInfo.age = (byte)c.getInt(c.getColumnIndexOrThrow(UserInfoHeader.AGE));
-            userInfo.gender = (byte)c.getInt(c.getColumnIndexOrThrow(UserInfoHeader.GENDER));
-            userInfo.trueOrFalseLevel = (byte)c.getInt(c.getColumnIndexOrThrow(UserInfoHeader.TRUE_OR_FALSE_LEVEL));
-            userInfo.theOtherMeLevel = (byte)c.getInt(c.getColumnIndexOrThrow(UserInfoHeader.THE_OTHER_ME_LEVEL));
-            userInfo.talkToMeLevel = (byte)c.getInt(c.getColumnIndexOrThrow(UserInfoHeader.TALK_TO_ME_LEVEL));
-            users.add(userInfo);
-        }
-        c.close();
-
-        Log.d("user info", String.format("users: %s", users.size()));
-
-        if (users.size() > 0)
-            return users.get(0);
-        else
-            return null;
     }
 }
 
