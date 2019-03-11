@@ -114,11 +114,11 @@ public class TrueOrFalseActivity extends AppCompatActivity  {
                     @Override
                     public void onClick(View v) {
                         if(musicButton.getText().toString().equalsIgnoreCase("music off")) {
+                            musicButton.setText("Music On");
                             musicButton.setBackground(getDrawable(R.drawable.music_on_back));
-                            Log.d("###", musicButton.getText().toString());
                         } else {
+                            musicButton.setText("Music Off");
                             musicButton.setBackground(getDrawable(R.drawable.music_off_back));
-                            Log.d("###", musicButton.getText().toString());
                         }
                     }
                 });
@@ -206,17 +206,17 @@ public class TrueOrFalseActivity extends AppCompatActivity  {
             index = cursor.getColumnIndexOrThrow(TrueOrFalseHeader.TRIVIA);
             qp.trivia = cursor.getString(index);
             if (difficultyFlag == 1) {
-                if (counter < 10) {
+                if (counter < 11) {
                     questionPool.add(qp);
                     totalQuestions++;
                 }
             } else if (difficultyFlag <= 2) {
-                if (counter < 15) {
+                if (counter < 16) {
                     questionPool.add(qp);
                     totalQuestions++;
                 }
             } else if (difficultyFlag <= 3) {
-                if (counter < 20) {
+                if (counter < 21) {
                     questionPool.add(qp);
                     totalQuestions++;
                 }
@@ -229,13 +229,35 @@ public class TrueOrFalseActivity extends AppCompatActivity  {
 
     private void checkAnswer(int value) {
 
-        if (value == _questionpool.correctAnswer) {
-            setScore();
-            trueButton.setBackground(getDrawable(R.drawable.correct_back));
-            falseButton.setBackground(getDrawable(R.drawable.wrong_back));
-            resultImageView.setBackground(getDrawable(R.drawable.banner_correct));
-            triviaTextView.setBackground(getDrawable(R.drawable.banner_correct_trivia));
-            numCorrect++;
+        if (value == 1) {
+            if(_questionpool.correctAnswer == 1) {
+                setScore();
+                trueButton.setBackground(getDrawable(R.drawable.correct_back));
+                falseButton.setBackground(getDrawable(R.drawable.wrong_back));
+                resultImageView.setBackground(getDrawable(R.drawable.banner_correct));
+                triviaTextView.setBackground(getDrawable(R.drawable.banner_correct_trivia));
+                numCorrect++;
+            } else {
+                trueButton.setBackground(getDrawable(R.drawable.wrong_back));
+                falseButton.setBackground(getDrawable(R.drawable.correct_back));
+                resultImageView.setBackground(getDrawable(R.drawable.banner_wrong));
+                triviaTextView.setBackground(getDrawable(R.drawable.banner_wrong_trivia));
+            }
+
+        } else if (value == 0) {
+            if(_questionpool.correctAnswer == 0) {
+                setScore();
+                trueButton.setBackground(getDrawable(R.drawable.wrong_back));
+                falseButton.setBackground(getDrawable(R.drawable.correct_back));
+                resultImageView.setBackground(getDrawable(R.drawable.banner_correct));
+                triviaTextView.setBackground(getDrawable(R.drawable.banner_correct_trivia));
+                numCorrect++;
+            } else {
+                trueButton.setBackground(getDrawable(R.drawable.correct_back));
+                falseButton.setBackground(getDrawable(R.drawable.wrong_back));
+                resultImageView.setBackground(getDrawable(R.drawable.banner_wrong));
+                triviaTextView.setBackground(getDrawable(R.drawable.banner_wrong_trivia));
+            }
 
         } else if (value == 9) {
             if (_questionpool.correctAnswer == 0) {
@@ -249,11 +271,6 @@ public class TrueOrFalseActivity extends AppCompatActivity  {
                 resultImageView.setBackground(getDrawable(R.drawable.banner_wrong));
                 triviaTextView.setBackground(getDrawable(R.drawable.banner_wrong_trivia));
             }
-        } else {
-            trueButton.setBackground(getDrawable(R.drawable.wrong_back));
-            falseButton.setBackground(getDrawable(R.drawable.correct_back));
-            resultImageView.setBackground(getDrawable(R.drawable.banner_wrong));
-            triviaTextView.setBackground(getDrawable(R.drawable.banner_wrong_trivia));
         }
         nextButton.setVisibility(View.VISIBLE);
         triviaTextView.setVisibility(View.VISIBLE);
@@ -264,7 +281,7 @@ public class TrueOrFalseActivity extends AppCompatActivity  {
 
     private void init() {
         scoreTextView.setText("" + score);
-        numQuestionTextView.setText("" + questionCounter + "/" + totalQuestions);
+        numQuestionTextView.setText("" + questionCounter + "/" + (totalQuestions - 1));
     }
 
     private void setScore() {
@@ -307,6 +324,7 @@ public class TrueOrFalseActivity extends AppCompatActivity  {
                 final Dialog dialog = new Dialog(context);
                 dialog.setContentView(R.layout.times_up);
                 dialog.setCanceledOnTouchOutside(false);
+                dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                 CountDownTimer cdt = new CountDownTimer(2000, 1000) {
                     @Override
                     public void onTick(long millisUntilFinished) {
@@ -316,8 +334,10 @@ public class TrueOrFalseActivity extends AppCompatActivity  {
                     @Override
                     public void onFinish() {
                         checkAnswer(9);
+                        dialog.dismiss();
                     }
                 };
+                dialog.show();
                 cdt.start();
             }
         };
@@ -331,14 +351,49 @@ public class TrueOrFalseActivity extends AppCompatActivity  {
     private void gameFinished(int flag) {
         // User finished the game
         if (flag == 0) {
-            Toast.makeText(this,"FINISHED!", Toast.LENGTH_LONG).show();
-            Bundle bundle = new Bundle();
-            bundle.putInt("score", score);
-            bundle.putInt("difficulty", difficultyFlag);
-            bundle.putString("questions", "" + numCorrect + "/" + totalQuestions);
-            Intent intent = new Intent(this, GameResultsActivity.class);
-            intent.putExtras(bundle);
-            startActivity(intent);
+            final Dialog dialog = new Dialog(context);
+            dialog.setContentView(R.layout.game_summary);
+            TextView congratsTextView, correctTextView, percentageTextView;
+            ImageView medalImageView;
+            Button continueButton;
+            congratsTextView = dialog.findViewById(R.id.gsCongratsTextView);
+            correctTextView = dialog.findViewById(R.id.gsCorrectTextView);
+            percentageTextView = dialog.findViewById(R.id.gsPercentageTextView);
+            medalImageView = dialog.findViewById(R.id.gsMedalImageView);
+            continueButton = dialog.findViewById(R.id.gsContinueButton);
+            if (score>=800 && score<=1000) {
+                medalImageView.setBackground(getDrawable(R.drawable.icon_1_medal));
+                congratsTextView.setText("");
+            }
+            else if (score>=1001 && score<=1500) {
+                medalImageView.setBackground(getDrawable(R.drawable.icon_2_medal));
+                congratsTextView.setText("");
+            }
+            else if (score>=1501 && score<=2000) {
+                medalImageView.setBackground(getDrawable(R.drawable.icon_3_medal));
+                if (difficultyFlag == 1) { congratsTextView.setText("Congratulations! You have unlocked the Average Level!"); }
+                else if (difficultyFlag == 2) { congratsTextView.setText("Congratulations! You have unlocked the Difficult Level!"); }
+                else { congratsTextView.setText("Congratulations! You have finished the True or False category!"); }
+            }
+            else {
+                medalImageView.setBackground(getDrawable(R.drawable.icon_no_medal));
+                congratsTextView.setText("");
+            }
+            correctTextView.setText("" + numCorrect + "/" + (totalQuestions - 1));
+            double percentage = (Double.parseDouble("" + numCorrect) / Double.parseDouble("" + (totalQuestions - 1))) * 100.0f;
+            Log.d("###", "" + percentage + " | " + numCorrect + " | " + totalQuestions);
+            percentageTextView.setText("Percentage: " + percentage + "%");
+            continueButton.setOnClickListener(new View.OnClickListener() {
+                  @Override
+                  public void onClick(View v) {
+                      dialog.dismiss();
+                      // TODO
+                  }
+              });
+
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.show();
         }
 
         // Time's up!
@@ -347,7 +402,7 @@ public class TrueOrFalseActivity extends AppCompatActivity  {
             Bundle bundle = new Bundle();
             bundle.putInt("score", score);
             bundle.putInt("difficulty", difficultyFlag);
-            bundle.putString("questions", "" + numCorrect + "/" + totalQuestions);
+            bundle.putString("questions", "" + numCorrect + "/" + (totalQuestions - 1));
             Intent intent = new Intent(this, GameResultsActivity.class);
             intent.putExtras(bundle);
             startActivity(intent);
