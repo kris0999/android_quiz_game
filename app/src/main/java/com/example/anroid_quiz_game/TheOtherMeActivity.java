@@ -56,6 +56,7 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
     private int numCorrect;
     private int difficultyFlag = 1;
     CountDownTimer cdTimer;
+    private int questionManager = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,9 +130,9 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
                     @Override
                     public void onClick(View v) {
                         if(musicButton.getText().toString().equalsIgnoreCase("music off")) {
-                            musicButton.setText("Music On");
+                            musicButton.setBackground(getDrawable(R.drawable.music_on_back));
                         } else {
-                            musicButton.setText("Music Off");
+                            musicButton.setBackground(getDrawable(R.drawable.music_off_back));
                         }
                     }
                 });
@@ -145,7 +146,7 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
     protected void onStart() {
         super.onStart();
         getChoices();
-        startTime();
+        //startTime();
     }
 
     @Override
@@ -298,6 +299,9 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
             public void onFinish() {
                 stopTime();
                 getChoices();
+                if (questionManager>3) {
+                    gameFinished(0);
+                }
             }
         };
         cdTimer.start();
@@ -351,7 +355,7 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
             scoreTextView.setText("" + score);
             numCorrect++;
         }
-        numQuestionsTextView.setText("" + numCorrect + "/" + totalQuestions);
+        numQuestionsTextView.setText("" + numCorrect);
     }
 
     private boolean checkAnswerWord1(String value) {
@@ -463,6 +467,7 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
         setTimerTotal();
         startTime();
         updateScore(1);
+        questionManager++;
     }
 
     private void updateChoices(TextView tv) {
@@ -474,6 +479,9 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
             } else {
                 questionCounter++;
                 getChoices();
+                if(questionManager>3) {
+                    gameFinished(0);
+                }
             }
         } catch(Exception e) {
             tv.setVisibility(View.INVISIBLE);

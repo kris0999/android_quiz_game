@@ -25,9 +25,9 @@ import java.util.Collections;
 import java.util.List;
 
 public class TrueOrFalseActivity extends AppCompatActivity  {
-    Button falseButton, nextButton, pauseButton, trueButton;
+    Button falseButton, nextButton, trueButton;
     TextView numQuestionTextView, questionTextView, scoreTextView, timerTextView, triviaTextView;
-    ImageView levelImageView, resultImageView;
+    ImageView levelImageView, resultImageView, pauseButton;
 
     final Context context = this;
 
@@ -62,7 +62,6 @@ public class TrueOrFalseActivity extends AppCompatActivity  {
         // buttons
         falseButton = findViewById(R.id.tofFalseButton);
         nextButton = findViewById(R.id.tofNextButton);
-        pauseButton = findViewById(R.id.tofPauseButton);
         trueButton = findViewById(R.id.tofTrueButton);
 
         // textviews
@@ -75,14 +74,18 @@ public class TrueOrFalseActivity extends AppCompatActivity  {
         // imageviews
         levelImageView = findViewById(R.id.tofLevelImageView);
         resultImageView = findViewById(R.id.tofResultImageView);
+        pauseButton = findViewById(R.id.tofPauseButton);
 
         DBHelper dbHelper = new DBHelper(this,1);
         //dbHelper.preload();
 
         generateQuestionPool(1, dbHelper);
+
         triviaTextView.setVisibility(View.INVISIBLE);
-        trueButton.setBackgroundColor(getResources().getColor(R.color.colorWhite));
-        falseButton.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+        resultImageView.setVisibility(View.INVISIBLE);
+        nextButton.setVisibility(View.INVISIBLE);
+        trueButton.setBackground(getDrawable(R.drawable.button_background));
+        falseButton.setBackground(getDrawable(R.drawable.button_background));
 
         setTimerTotal();
 
@@ -111,9 +114,11 @@ public class TrueOrFalseActivity extends AppCompatActivity  {
                     @Override
                     public void onClick(View v) {
                         if(musicButton.getText().toString().equalsIgnoreCase("music off")) {
-                            musicButton.setText("Music On");
+                            musicButton.setBackground(getDrawable(R.drawable.music_on_back));
+                            Log.d("###", musicButton.getText().toString());
                         } else {
-                            musicButton.setText("Music Off");
+                            musicButton.setBackground(getDrawable(R.drawable.music_off_back));
+                            Log.d("###", musicButton.getText().toString());
                         }
                     }
                 });
@@ -134,8 +139,10 @@ public class TrueOrFalseActivity extends AppCompatActivity  {
 
     public void tofNextButton_Click(View view) {
         triviaTextView.setVisibility(View.INVISIBLE);
-        trueButton.setBackgroundColor(getResources().getColor(R.color.colorWhite));
-        falseButton.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+        resultImageView.setVisibility(View.INVISIBLE);
+        nextButton.setVisibility(View.INVISIBLE);
+        trueButton.setBackground(getDrawable(R.drawable.button_background));
+        falseButton.setBackground(getDrawable(R.drawable.button_background));
         questionCounter++;
 
         if(questionCounter >= totalQuestions) {
@@ -224,26 +231,33 @@ public class TrueOrFalseActivity extends AppCompatActivity  {
 
         if (value == _questionpool.correctAnswer) {
             setScore();
-            trueButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            falseButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-            resultImageView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            trueButton.setBackground(getDrawable(R.drawable.correct_back));
+            falseButton.setBackground(getDrawable(R.drawable.wrong_back));
+            resultImageView.setBackground(getDrawable(R.drawable.banner_correct));
+            triviaTextView.setBackground(getDrawable(R.drawable.banner_correct_trivia));
             numCorrect++;
 
         } else if (value == 9) {
             if (_questionpool.correctAnswer == 0) {
-                trueButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                falseButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-                resultImageView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                trueButton.setBackground(getDrawable(R.drawable.correct_back));
+                falseButton.setBackground(getDrawable(R.drawable.wrong_back));
+                resultImageView.setBackground(getDrawable(R.drawable.banner_correct));
+                triviaTextView.setBackground(getDrawable(R.drawable.banner_correct_trivia));
             } else {
-                trueButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-                falseButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                resultImageView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                trueButton.setBackground(getDrawable(R.drawable.wrong_back));
+                falseButton.setBackground(getDrawable(R.drawable.correct_back));
+                resultImageView.setBackground(getDrawable(R.drawable.banner_wrong));
+                triviaTextView.setBackground(getDrawable(R.drawable.banner_wrong_trivia));
             }
         } else {
-            trueButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-            falseButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            resultImageView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+            trueButton.setBackground(getDrawable(R.drawable.wrong_back));
+            falseButton.setBackground(getDrawable(R.drawable.correct_back));
+            resultImageView.setBackground(getDrawable(R.drawable.banner_wrong));
+            triviaTextView.setBackground(getDrawable(R.drawable.banner_wrong_trivia));
         }
+        nextButton.setVisibility(View.VISIBLE);
+        triviaTextView.setVisibility(View.VISIBLE);
+        resultImageView.setVisibility(View.VISIBLE);
         init();
         stopTime();
     }
@@ -251,7 +265,6 @@ public class TrueOrFalseActivity extends AppCompatActivity  {
     private void init() {
         scoreTextView.setText("" + score);
         numQuestionTextView.setText("" + questionCounter + "/" + totalQuestions);
-        triviaTextView.setVisibility(View.VISIBLE);
     }
 
     private void setScore() {
@@ -291,7 +304,21 @@ public class TrueOrFalseActivity extends AppCompatActivity  {
 
             @Override
             public void onFinish() {
-                checkAnswer(9);
+                final Dialog dialog = new Dialog(context);
+                dialog.setContentView(R.layout.times_up);
+                dialog.setCanceledOnTouchOutside(false);
+                CountDownTimer cdt = new CountDownTimer(2000, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        checkAnswer(9);
+                    }
+                };
+                cdt.start();
             }
         };
         cdTimer.start();
