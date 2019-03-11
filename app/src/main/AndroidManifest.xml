@@ -16,10 +16,7 @@
 
         <activity android:name=".TrueOrFalseActivity"
             android:screenOrientation="userLandscape">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
 
         <activity android:name=".TFLevelActivity"
@@ -29,7 +26,9 @@
             android:screenOrientation="userLandscape"/>
 
         <activity android:name=".CategoriesActivity"
-            android:screenOrientation="userLandscape"/>
+            android:screenOrientation="userLandscape">
+
+        </activity>
 
         <activity android:name=".OtherLevelActivity"
             android:screenOrientation="userLandscape"/>
@@ -42,7 +41,10 @@
 
         <activity android:name=".TheOtherMeActivity"
             android:screenOrientation="userLandscape">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity android:name=".TalkToMeActivity"

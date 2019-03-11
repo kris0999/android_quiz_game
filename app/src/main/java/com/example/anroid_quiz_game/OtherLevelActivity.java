@@ -66,30 +66,25 @@ public class OtherLevelActivity extends AppCompatActivity implements ILevelLaunc
     public void launchLevel_Click(View view)
     {
         String btnTag = (String) view.getTag();
-// TODO
-//        Bundle bundle = new Bundle();
-//        Intent intent;
+        Bundle bundle = new Bundle();
+        Intent intent;
 
         switch (btnTag) {
             case "easy": {
-                // TODO
-                // Bundle for easy
+                bundle.putInt("difficulty", 1);
             }
             break;
             case "ave": {
-                // TODO
-                // Bundle for average
+                bundle.putInt("difficulty", 2);
             }
             break;
             case "diff": {
-                // TODO
-                // Bundle for difficult
+                bundle.putInt("difficulty", 3);
             }
             break;
         }
-// TODO
-//        intent = new Intent(this, TrueOrFalseActivity.class);
-//        intent.putExtras(bundle);
-//        startActivity(intent);
+        intent = new Intent(this, TheOtherMeActivity.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }

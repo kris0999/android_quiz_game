@@ -22,6 +22,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android_quiz_game.model.Category;
+import com.android_quiz_game.model.HighScore;
 import com.android_quiz_game.model.TheOtherMeHeader;
 import com.android_quiz_game.model.TrueOrFalseHeader;
 import com.android_quiz_game.utility.DBHelper;
@@ -57,6 +59,9 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
     private int difficultyFlag = 1;
     CountDownTimer cdTimer;
     private int questionManager = 0;
+    private boolean animationPivot = true;
+
+    DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,8 +107,13 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
         word2TextView.setOnDragListener(this);
         word2TextView.setTag("word 2");
 
-        DBHelper dbHelper = new DBHelper(this,1);
-        generateQuestionPool(1, dbHelper);
+        Bundle bundle = getIntent().getExtras();
+        difficultyFlag = bundle.getInt("difficulty");
+
+        dbHelper = new DBHelper(this,1);
+        generateQuestionPool(difficultyFlag, dbHelper);
+
+        setBanner();
 
         // pause
         pauseButton.setOnClickListener(new View.OnClickListener() {
@@ -130,16 +140,34 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
                     @Override
                     public void onClick(View v) {
                         if(musicButton.getText().toString().equalsIgnoreCase("music off")) {
+                            musicButton.setText("Music On");
                             musicButton.setBackground(getDrawable(R.drawable.music_on_back));
                         } else {
+                            musicButton.setText("Music Off");
                             musicButton.setBackground(getDrawable(R.drawable.music_off_back));
                         }
+                    }
+                });
+                exitButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        finishAffinity();
+                    }
+                });
+                newButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent;
+                        intent = new Intent(context, OtherLevelActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
                 });
             }
         });
 
         setTimerTotal();
+        resultImageView.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -147,6 +175,15 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
         super.onStart();
         getChoices();
         //startTime();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Intent intent = new Intent(this, CategoriesActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -207,6 +244,8 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
 
                 if (v.getTag().toString().equalsIgnoreCase("word 1")) {
                     if (checkAnswerWord1(dragData)) {
+                        resultImageView.setVisibility(View.VISIBLE);
+                        resultImageView.setBackground(getDrawable(R.drawable.banner_correct));
                         updateScore(0);
                         if (choice1TextView.getTag().toString().equalsIgnoreCase(dragData.toString())) {
                             updateChoices(choice1TextView);
@@ -217,11 +256,36 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
                         } else if (choice4TextView.getTag().toString().equalsIgnoreCase(dragData.toString())) {
                             updateChoices(choice4TextView);
                         }
+                    } else {
+                        resultImageView.setVisibility(View.VISIBLE);
+                        resultImageView.setBackground(getDrawable(R.drawable.banner_wrong));
+                        animationPivot = true;
+                        CountDownTimer cdt = new CountDownTimer(1000, 200) {
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+                                if (animationPivot) {
+                                    word1TextView.setBackground(getDrawable(R.drawable.cloud_yellow));
+                                    animationPivot = false;
+                                } else {
+                                    word1TextView.setBackground(getDrawable(R.drawable.icon_cloud));
+                                    animationPivot = true;
+                                }
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                word1TextView.setBackground(getDrawable(R.drawable.icon_cloud));
+                                resultImageView.setVisibility(View.INVISIBLE);
+                            }
+                        };
+                        cdt.start();
                     }
                 }
 
                 if (v.getTag().toString().equalsIgnoreCase("word 2")) {
                     if (checkAnswerWord2(dragData)) {
+                        resultImageView.setVisibility(View.VISIBLE);
+                        resultImageView.setBackground(getDrawable(R.drawable.banner_correct));
                         updateScore(0);
                         if (choice1TextView.getTag().toString().equalsIgnoreCase(dragData.toString())) {
                             updateChoices(choice1TextView);
@@ -232,6 +296,29 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
                         } else if (choice4TextView.getTag().toString().equalsIgnoreCase(dragData.toString())) {
                             updateChoices(choice4TextView);
                         }
+                    } else {
+                        resultImageView.setVisibility(View.VISIBLE);
+                        resultImageView.setBackground(getDrawable(R.drawable.banner_wrong));
+                        animationPivot = true;
+                        CountDownTimer cdt = new CountDownTimer(1000, 200) {
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+                                if (animationPivot) {
+                                    word2TextView.setBackground(getDrawable(R.drawable.cloud_yellow));
+                                    animationPivot = false;
+                                } else {
+                                    word2TextView.setBackground(getDrawable(R.drawable.icon_cloud));
+                                    animationPivot = true;
+                                }
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                word2TextView.setBackground(getDrawable(R.drawable.icon_cloud));
+                                resultImageView.setVisibility(View.INVISIBLE);
+                            }
+                        };
+                        cdt.start();
                     }
                 }
 
@@ -286,6 +373,12 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
         return true;
     }
 
+    private void setBanner() {
+        if (difficultyFlag == 1) { levelImageView.setBackground(getDrawable(R.drawable.banner_easy)); }
+        else if (difficultyFlag == 2) { levelImageView.setBackground(getDrawable(R.drawable.banner_average)); }
+        else if (difficultyFlag == 3) { levelImageView.setBackground(getDrawable(R.drawable.banner_difficult)); }
+    }
+
     private void startTime() {
         cdTimer = new CountDownTimer(cdTotal, cdInterval ) {
 
@@ -298,10 +391,29 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
             @Override
             public void onFinish() {
                 stopTime();
-                getChoices();
-                if (questionManager>3) {
-                    gameFinished(0);
-                }
+                final Dialog dialog = new Dialog(context);
+                dialog.setContentView(R.layout.times_up);
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                CountDownTimer cdt = new CountDownTimer(2000, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        getChoices();
+                        if (questionManager>3) {
+                            gameFinished(0);
+                        }
+                        dialog.dismiss();
+                    }
+                };
+                dialog.show();
+                cdt.start();
+
+
             }
         };
         cdTimer.start();
@@ -322,14 +434,91 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
     private void gameFinished(int flag) {
         // User finished the game
         if (flag == 0) {
-            Toast.makeText(this,"FINISHED!", Toast.LENGTH_LONG).show();
-            Bundle bundle = new Bundle();
-            bundle.putInt("score", score);
-            bundle.putInt("difficulty", difficultyFlag);
-            bundle.putString("questions", "");
-            Intent intent = new Intent(this, GameResultsActivity.class);
-            intent.putExtras(bundle);
-            startActivity(intent);
+            stopTime();
+            final Dialog dialog = new Dialog(context);
+            dialog.setContentView(R.layout.game_summary);
+            TextView congratsTextView, correctTextView, percentageTextView;
+            ImageView medalImageView;
+            Button continueButton;
+            congratsTextView = dialog.findViewById(R.id.gsCongratsTextView);
+            correctTextView = dialog.findViewById(R.id.gsCorrectTextView);
+            percentageTextView = dialog.findViewById(R.id.gsPercentageTextView);
+            medalImageView = dialog.findViewById(R.id.gsMedalImageView);
+            continueButton = dialog.findViewById(R.id.gsContinueButton);
+            if (score>=1000 && score<=1400) {
+                medalImageView.setBackground(getDrawable(R.drawable.icon_1_medal));
+                congratsTextView.setText("");
+                HighScore hs = new HighScore();
+                hs.category = 2;
+                hs.difficulty = difficultyFlag;
+                hs.score = score;
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                DBHelper.updateHighScore(hs, db);
+            }
+            else if (score>=1401 && score<=1900) {
+                medalImageView.setBackground(getDrawable(R.drawable.icon_2_medal));
+                congratsTextView.setText("");
+                HighScore hs = new HighScore();
+                hs.category = 2;
+                hs.difficulty = difficultyFlag;
+                hs.score = score;
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                DBHelper.updateHighScore(hs, db);
+            }
+            else if (score>=1901) {
+                medalImageView.setBackground(getDrawable(R.drawable.icon_3_medal));
+                if (difficultyFlag == 1) {
+                    congratsTextView.setText("Congratulations! You have unlocked the Average Level!");
+                    HighScore hs = new HighScore();
+                    hs.category = 2;
+                    hs.difficulty = difficultyFlag;
+                    hs.score = score;
+                    SQLiteDatabase db = dbHelper.getWritableDatabase();
+                    DBHelper.updateHighScore(hs, db);
+
+                    DBHelper.updateLevel(Category.TheOtherMe,(difficultyFlag + 1),db);
+                }
+                else if (difficultyFlag == 2) {
+                    congratsTextView.setText("Congratulations! You have unlocked the Difficult Level!");
+                    HighScore hs = new HighScore();
+                    hs.category = 2;
+                    hs.difficulty = difficultyFlag;
+                    hs.score = score;
+                    SQLiteDatabase db = dbHelper.getWritableDatabase();
+                    DBHelper.updateHighScore(hs, db);
+
+                    DBHelper.updateLevel(Category.TheOtherMe,(difficultyFlag + 1),db);
+                }
+                else {
+                    congratsTextView.setText("Congratulations! You have finished the The Other Me category!");
+                    HighScore hs = new HighScore();
+                    hs.category = 2;
+                    hs.difficulty = difficultyFlag;
+                    hs.score = score;
+                    SQLiteDatabase db = dbHelper.getWritableDatabase();
+                    DBHelper.updateHighScore(hs, db);
+                }
+            }
+            else {
+                medalImageView.setBackground(getDrawable(R.drawable.icon_no_medal));
+                congratsTextView.setText("");
+            }
+            correctTextView.setText("" + numCorrect );
+            double percentage = (Double.parseDouble("" + numCorrect) / Double.parseDouble("" + (totalQuestions - 1))) * 100.0f;
+            percentageTextView.setText("");
+            continueButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                    Intent intent = new Intent(context, CategoriesActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.show();
         }
 
         // Time's up!
@@ -346,7 +535,11 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
     }
 
     private void stopTime() {
-        cdTimer.cancel();
+        try{
+            cdTimer.cancel();
+        } catch (Exception e) {
+
+        }
     }
 
     private void updateScore(int flag) {
@@ -354,6 +547,19 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
             score = score + 100;
             scoreTextView.setText("" + score);
             numCorrect++;
+            CountDownTimer cdt = new CountDownTimer(1000, 250) {
+
+                @Override
+                public void onTick(long millisUntilFinished) {
+
+                }
+
+                @Override
+                public void onFinish() {
+                    resultImageView.setVisibility(View.INVISIBLE);
+                }
+            };
+            cdt.start();
         }
         numQuestionsTextView.setText("" + numCorrect);
     }
@@ -465,9 +671,9 @@ public class TheOtherMeActivity extends AppCompatActivity implements View.OnDrag
         Collections.shuffle(_choices);
 
         setTimerTotal();
-        startTime();
         updateScore(1);
         questionManager++;
+        startTime();
     }
 
     private void updateChoices(TextView tv) {

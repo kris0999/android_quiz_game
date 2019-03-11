@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android_quiz_game.model.Category;
+import com.android_quiz_game.model.HighScore;
 import com.android_quiz_game.model.TrueOrFalseHeader;
 import com.android_quiz_game.utility.DBHelper;
 
@@ -79,7 +81,11 @@ public class TrueOrFalseActivity extends AppCompatActivity  {
         DBHelper dbHelper = new DBHelper(this,1);
         //dbHelper.preload();
 
-        generateQuestionPool(1, dbHelper);
+        Bundle bundle = getIntent().getExtras();
+        difficultyFlag = bundle.getInt("difficulty");
+        generateQuestionPool(difficultyFlag, dbHelper);
+
+        setBanner();
 
         triviaTextView.setVisibility(View.INVISIBLE);
         resultImageView.setVisibility(View.INVISIBLE);
@@ -122,6 +128,21 @@ public class TrueOrFalseActivity extends AppCompatActivity  {
                         }
                     }
                 });
+                exitButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        finishAffinity();
+                    }
+                });
+                newButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent;
+                        intent = new Intent(context, TFLevelActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
             }
         });
     }
@@ -135,6 +156,21 @@ public class TrueOrFalseActivity extends AppCompatActivity  {
         triviaTextView.setText(_questionpool.trivia);
         init();
         startTime();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Intent intent = new Intent(this, CategoriesActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void setBanner() {
+        if (difficultyFlag == 1) { levelImageView.setBackground(getDrawable(R.drawable.banner_easy)); }
+        else if (difficultyFlag == 2) { levelImageView.setBackground(getDrawable(R.drawable.banner_average)); }
+        else if (difficultyFlag == 3) { levelImageView.setBackground(getDrawable(R.drawable.banner_difficult)); }
     }
 
     public void tofNextButton_Click(View view) {
@@ -364,16 +400,58 @@ public class TrueOrFalseActivity extends AppCompatActivity  {
             if (score>=800 && score<=1000) {
                 medalImageView.setBackground(getDrawable(R.drawable.icon_1_medal));
                 congratsTextView.setText("");
+                HighScore hs = new HighScore();
+                hs.category = 1;
+                hs.difficulty = difficultyFlag;
+                hs.score = score;
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                DBHelper.updateHighScore(hs, db);
             }
             else if (score>=1001 && score<=1500) {
                 medalImageView.setBackground(getDrawable(R.drawable.icon_2_medal));
                 congratsTextView.setText("");
+                HighScore hs = new HighScore();
+                hs.category = 1;
+                hs.difficulty = difficultyFlag;
+                hs.score = score;
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                DBHelper.updateHighScore(hs, db);
             }
             else if (score>=1501 && score<=2000) {
                 medalImageView.setBackground(getDrawable(R.drawable.icon_3_medal));
-                if (difficultyFlag == 1) { congratsTextView.setText("Congratulations! You have unlocked the Average Level!"); }
-                else if (difficultyFlag == 2) { congratsTextView.setText("Congratulations! You have unlocked the Difficult Level!"); }
-                else { congratsTextView.setText("Congratulations! You have finished the True or False category!"); }
+                if (difficultyFlag == 1) {
+                    congratsTextView.setText("Congratulations! You have unlocked the Average Level!");
+                    HighScore hs = new HighScore();
+                    hs.category = 1;
+                    hs.difficulty = difficultyFlag;
+                    hs.score = score;
+                    SQLiteDatabase db = dbHelper.getWritableDatabase();
+                    DBHelper.updateHighScore(hs, db);
+
+                    DBHelper.updateLevel(Category.TrueOrFalse,(difficultyFlag + 1),db);
+
+                }
+                else if (difficultyFlag == 2) {
+                    congratsTextView.setText("Congratulations! You have unlocked the Difficult Level!");
+                    HighScore hs = new HighScore();
+                    hs.category = 1;
+                    hs.difficulty = difficultyFlag;
+                    hs.score = score;
+                    SQLiteDatabase db = dbHelper.getWritableDatabase();
+                    DBHelper.updateHighScore(hs, db);
+
+                    DBHelper.updateLevel(Category.TrueOrFalse,(difficultyFlag + 1),db);
+                }
+                else {
+                    congratsTextView.setText("Congratulations! You have finished the True or False category!");
+                    HighScore hs = new HighScore();
+                    hs.category = 1;
+                    hs.difficulty = difficultyFlag;
+                    hs.score = score;
+                    SQLiteDatabase db = dbHelper.getWritableDatabase();
+                    DBHelper.updateHighScore(hs, db);
+
+                }
             }
             else {
                 medalImageView.setBackground(getDrawable(R.drawable.icon_no_medal));
@@ -381,13 +459,15 @@ public class TrueOrFalseActivity extends AppCompatActivity  {
             }
             correctTextView.setText("" + numCorrect + "/" + (totalQuestions - 1));
             double percentage = (Double.parseDouble("" + numCorrect) / Double.parseDouble("" + (totalQuestions - 1))) * 100.0f;
-            Log.d("###", "" + percentage + " | " + numCorrect + " | " + totalQuestions);
             percentageTextView.setText("Percentage: " + percentage + "%");
             continueButton.setOnClickListener(new View.OnClickListener() {
                   @Override
                   public void onClick(View v) {
                       dialog.dismiss();
-                      // TODO
+                      Intent intent;
+                      intent = new Intent(context, CategoriesActivity.class);
+                      startActivity(intent);
+                      finish();
                   }
               });
 

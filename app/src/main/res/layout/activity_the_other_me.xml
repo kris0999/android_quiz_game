@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".TheOtherMeActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/main_back">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,34 +15,59 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@mipmap/ic_launcher"
+            android:background="@drawable/banner_difficult"
             android:id="@+id/tomLevelImageView"/>
-        <TextView
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0"
-            android:textAlignment="center"
-            android:id="@+id/tomScoreTextView"
-            android:layout_weight="1"/>
-        <TextView
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textAlignment="center"
+                android:id="@+id/tomScoreTextView"
+                android:background="@drawable/score"
+                android:gravity="center_vertical"
+                android:layout_centerInParent="true"
+                android:paddingLeft="25dp"/>
+        </RelativeLayout>
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0/0"
-            android:textAlignment="center"
-            android:id="@+id/tomNumQuestionTextView"
-            android:layout_weight="1"/>
-        <TextView
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0/0"
+                android:textAlignment="center"
+                android:id="@+id/tomNumQuestionTextView"
+                android:background="@drawable/question"
+                android:gravity="center_vertical"
+                android:layout_centerInParent="true"
+                android:paddingLeft="25dp"/>
+        </RelativeLayout>
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0:00"
-            android:textAlignment="center"
-            android:id="@+id/tomTimerTextView"
-            android:layout_weight="1"/>
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0:00"
+                android:textAlignment="center"
+                android:id="@+id/tomTimerTextView"
+                android:background="@drawable/timer"
+                android:gravity="center_vertical"
+                android:layout_centerInParent="true"
+                android:paddingLeft="25dp"/>
+        </RelativeLayout>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="||"
-            android:id="@+id/tomPauseButton"/>
+            android:text=""
+            android:id="@+id/tomPauseButton"
+            android:background="@drawable/pause"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,7 +77,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="60dp"
-            android:background="@mipmap/ic_launcher"
+            android:background="@drawable/banner_correct"
             android:id="@+id/tomResultImageView"/>
     </LinearLayout>
     <LinearLayout
@@ -63,9 +89,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@mipmap/ic_launcher"
+            android:background="@drawable/icon_cloud"
             android:layout_marginRight="75dp"
-            android:text="Word 1"
+            android:text="test"
             android:textStyle="bold"
             android:gravity="center"
             android:textAlignment="center"
@@ -73,9 +99,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@mipmap/ic_launcher"
+            android:background="@drawable/icon_cloud"
             android:layout_marginLeft="75dp"
-            android:text="Word 2"
+            android:text="test test test"
             android:textStyle="bold"
             android:gravity="center"
             android:textAlignment="center"
@@ -93,14 +119,15 @@
             android:layout_weight="1"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
             android:text="choice 1"
             android:textStyle="bold"
             android:gravity="center"
             android:textAlignment="center"
             android:layout_weight="1"
-            android:id="@+id/tomChoice1TextView"/>
+            android:id="@+id/tomChoice1TextView"
+            android:background="@drawable/button_background"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -108,14 +135,15 @@
             android:layout_weight="1"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
             android:text="choice 2"
             android:textStyle="bold"
             android:gravity="center"
             android:textAlignment="center"
             android:layout_weight="1"
-            android:id="@+id/tomChoice2TextView"/>
+            android:id="@+id/tomChoice2TextView"
+            android:background="@drawable/button_background"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -124,14 +152,15 @@
         android:gravity="center"
         android:layout_weight="1">
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
             android:text="choice 3"
             android:textStyle="bold"
             android:gravity="center"
             android:textAlignment="center"
             android:layout_weight="1"
-            android:id="@+id/tomChoice3TextView"/>
+            android:id="@+id/tomChoice3TextView"
+            android:background="@drawable/button_background"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -139,14 +168,15 @@
             android:layout_weight="1"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
             android:text="choice 4"
             android:textStyle="bold"
             android:gravity="center"
             android:textAlignment="center"
             android:layout_weight="1"
-            android:id="@+id/tomChoice4TextView"/>
+            android:id="@+id/tomChoice4TextView"
+            android:background="@drawable/button_background"/>
 
         <TextView
             android:layout_width="wrap_content"
