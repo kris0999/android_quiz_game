@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.ContactsContract;
 import android.util.Log;
 
+import com.android_quiz_game.model.Category;
 import com.android_quiz_game.model.Csv;
 import com.android_quiz_game.model.DataStateHeader;
 import com.android_quiz_game.model.HighScore;
@@ -283,6 +284,28 @@ public class DBHelper extends SQLiteOpenHelper {
             default:
                 return false;
         }
+    }
+
+    public static void updateLevel(Category category, int difficulty, SQLiteDatabase writableDB)
+    {
+        ContentValues contentValues = new ContentValues();
+        switch (category) {
+            case TalkToMe: {
+                contentValues.put(UserInfoHeader.TALK_TO_ME_LEVEL, difficulty);
+            }
+                break;
+            case TheOtherMe: {
+                contentValues.put(UserInfoHeader.THE_OTHER_ME_LEVEL, difficulty);
+            }
+                break;
+            case TrueOrFalse: {
+                contentValues.put(UserInfoHeader.TRUE_OR_FALSE_LEVEL, difficulty);
+            }
+                break;
+        }
+
+        writableDB.update(USER_INFO, contentValues, "id = 1", null);
+        writableDB.close();
     }
 }
 
