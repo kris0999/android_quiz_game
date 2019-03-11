@@ -5,10 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -35,7 +38,7 @@ public class TalkToMeActivity extends AppCompatActivity {
             choice4View, scoreView, questionProgressView;
     private RelativeLayout ttmView;
     private ImageView character1, character2;
-    private Button pauseButton;
+    private ImageView pauseButton;
 
     private List<Conversation> _convo;
     private UserInfo _userInfo;
@@ -101,11 +104,54 @@ public class TalkToMeActivity extends AppCompatActivity {
         setQuestionProgress();
     }
 
-    public void ttmChoicesButton_Click(View view)
+    public void ttmChoicesButton_Click(final View view)
     {
-        // Move to next question after selecting answer
-        evaluateScore(view);
-        ttmNextButton_Click(view);
+        choice1View.setBackgroundResource(R.drawable.choice_inactive);
+        choice2View.setBackgroundResource(R.drawable.choice_inactive);
+        choice3View.setBackgroundResource(R.drawable.choice_inactive);
+        choice4View.setBackgroundResource(R.drawable.choice_inactive);
+
+        choice1View.setClickable(false);
+        choice2View.setClickable(false);
+        choice3View.setClickable(false);
+        choice4View.setClickable(false);
+
+        view.setBackgroundResource(R.drawable.choice_active);
+
+        Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in_btn);
+        Log.d("anim", String.format("animation duration: %s", fadeIn.getDuration()));
+        view.startAnimation(fadeIn);
+        fadeIn.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                Log.d("anim", String.format("%s: animation completed", (String)view.getTag()));
+                // Move to next question after selecting answer
+                evaluateScore(view);
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                ttmNextButton_Click(view);
+                choice1View.setBackgroundResource(R.drawable.choices_normal);
+                choice2View.setBackgroundResource(R.drawable.choices_normal);
+                choice3View.setBackgroundResource(R.drawable.choices_normal);
+                choice4View.setBackgroundResource(R.drawable.choices_normal);
+
+                choice1View.setClickable(true);
+                choice2View.setClickable(true);
+                choice3View.setClickable(true);
+                choice4View.setClickable(true);
+            }
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
     }
 
     public void pauseButton_Click(View view)
@@ -152,10 +198,22 @@ public class TalkToMeActivity extends AppCompatActivity {
         choice3View = findViewById(R.id.ttmChoice3TextView);
         choice4View = findViewById(R.id.ttmChoice4TextView);
         scoreView = findViewById(R.id.ttmScoreTextView);
-        questionProgressView = findViewById(R.id.ttmNumQuestionTextView);
+        questionProgressView = findViewById(R.id.ttfNumQuestionTextView);
         character1 = findViewById(R.id.ttmCharacter1ImageView);
         character2 = findViewById(R.id.ttmCharacter2ImageView);
         pauseButton = findViewById(R.id.ttmPauseButton);
+        character1.setBackgroundColor(Color.parseColor("#00000000"));
+        character2.setBackgroundColor(Color.parseColor("#00000000"));
+
+        if (_userInfo.gender == 2) {
+            character1.setImageResource(R.drawable.kudo);
+            character2.setImageResource(R.drawable.ran);
+
+        }
+        else if (_userInfo.gender == 1) {
+            character1.setImageResource(R.drawable.ran);
+            character2.setImageResource(R.drawable.kudo);
+        }
 
         _currentConvoLine = getConversation(_convo);
 
@@ -180,8 +238,8 @@ public class TalkToMeActivity extends AppCompatActivity {
         // Character emphasis
         switch (character) {
             case 1: {
-                character1.setScaleX(1.5f);
-                character1.setScaleY(1.5f);
+                character1.setScaleX(1.65f);
+                character1.setScaleY(1.65f);
 
                 character2.setScaleY(1);
                 character2.setScaleX(1);
@@ -191,8 +249,8 @@ public class TalkToMeActivity extends AppCompatActivity {
                 character1.setScaleX(1);
                 character1.setScaleY(1);
 
-                character2.setScaleY(1.5f);
-                character2.setScaleX(1.5f);
+                character2.setScaleY(1.65f);
+                character2.setScaleX(1.65f);
             }
                 break;
         }
@@ -201,8 +259,10 @@ public class TalkToMeActivity extends AppCompatActivity {
     private void evaluateScore(View view)
     {
         try {
-            if (view.getTag().equals(_currentConvoLine.answer))
-                scoreView.setText(String.format("%s", ++_score));
+            if (view.getTag().equals(_currentConvoLine.answer)) {
+                _score += 100;
+                scoreView.setText(String.format("%s", _score));
+            }
         }
         catch (NullPointerException e) {
             // do nothing
@@ -219,7 +279,7 @@ public class TalkToMeActivity extends AppCompatActivity {
         bundle.putInt("highScore", highScore.score);
         bundle.putInt("score", _score);
         bundle.putInt("difficulty", _difficulty);
-        bundle.putString("questions", _score + "/" + _totalQuestion);
+        bundle.putString("questions", (_score/100) + "/" + _totalQuestion);
         Intent intent = new Intent(this, GameResultsActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);
@@ -232,9 +292,12 @@ public class TalkToMeActivity extends AppCompatActivity {
     private void evaluateNextlevel()
     {
         if (_difficulty < 3) {
-            if (_score >= (_totalQuestion - 2)) {
-                Toast.makeText(this, "New Level Unlocked", Toast.LENGTH_SHORT).show();
-                DBHelper.updateLevel(Category.TalkToMe, ++_difficulty, _dbHelper.getWritableDatabase());
+            if (_score == 1000) {
+                // 3 medal
+                if (_difficulty == _userInfo.talkToMeLevel) {
+                    Toast.makeText(this, "New Level Unlocked", Toast.LENGTH_SHORT).show();
+                    DBHelper.updateLevel(Category.TalkToMe, ++_difficulty, _dbHelper.getWritableDatabase());
+                }
             }
         }
     }

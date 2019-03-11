@@ -1,139 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TalkToMeActivity">
+    tools:context=".TalkToMeActivity"
+    android:orientation="vertical"
+    android:background="@drawable/ingame_bg">
 
-    <TableLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <TableRow
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_launcher"/>
+            android:layout_height="wrap_content"
+            android:background="@drawable/banner_difficult"
+            android:id="@+id/ttmLevelImageView"
+            android:layout_centerInParent="true"/>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:textAlignment="center"
                 android:id="@+id/ttmScoreTextView"
-                android:layout_weight="1"/>
+                android:background="@drawable/score"
+                android:gravity="center_vertical"
+                android:layout_centerInParent="true"
+                android:paddingLeft="25dp"
+                android:fontFamily="@font/gargle_rg"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0/0"
                 android:textAlignment="center"
-                android:id="@+id/ttmNumQuestionTextView"
-                android:layout_weight="1"/>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="||"
-                android:onClick="pauseButton_Click"
-                android:id="@+id/ttmPauseButton"/>
-        </TableRow>
-        <TableRow
+                android:id="@+id/ttfNumQuestionTextView"
+                android:background="@drawable/question"
+                android:gravity="center_vertical"
+                android:layout_centerInParent="true"
+                android:paddingLeft="25dp"
+                android:fontFamily="@font/gargle_rg"/>
+        </RelativeLayout>
+        <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_span="3"
-                android:onClick="ttmNextButton_Click"
-                android:id="@+id/ttmViewPanel"
-                android:layout_weight="1">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentBottom="true"
-                    android:background="@mipmap/ic_launcher"
-                    android:id="@+id/ttmCharacter1ImageView"/>
+            android:layout_height="wrap_content"
+            android:id="@+id/ttmPauseButton"
+            android:onClick="pauseButton_Click"
+            android:background="@drawable/pause"/>
+    </LinearLayout>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginEnd="0dp"
-                    android:background="@mipmap/ic_launcher"
-                    android:id="@+id/ttmCharacter2ImageView"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:onClick="ttmNextButton_Click"
+        android:id="@+id/ttmViewPanel">
 
-                <TextView
-                    android:id="@+id/ttmBaloonTextView"
-                    android:layout_width="400dp"
-                    android:layout_height="200dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center"
-                    android:text="sample question"
-                    android:textAlignment="center" />
+        <ImageView
+            android:layout_width="147dp"
+            android:layout_height="283dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginBottom="50dp"
+            android:background="@mipmap/ic_launcher"
+            android:id="@+id/ttmCharacter1ImageView"/>
+        <ImageView
+            android:layout_width="147dp"
+            android:layout_height="283dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="50dp"
+            android:background="@mipmap/ic_launcher"
+            android:id="@+id/ttmCharacter2ImageView"/>
+        <ImageView
+            android:layout_width="500dp"
+            android:layout_height="400dp"
+            android:src="@drawable/cloud_body"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/cloudImageView"
+            android:layout_marginTop="-65dp"/>
+        <TextView
+            android:id="@+id/ttmBaloonTextView"
+            android:layout_width="300dp"
+            android:layout_height="260dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:textColor="#000000"
+            android:text="sample 23	Manicotti _____ a big noodle. It's hollow on the inside and you fill it with different cheeses and then you put red tomato sauce over the top of it and it's pretty good."
+            android:textAlignment="center"
+            android:textSize="15sp"
+            android:fontFamily="@font/gargle_rg"/>
+        <RelativeLayout
+            android:layout_width="420dp"
+            android:layout_height="114dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical"
+            android:layout_marginBottom="11dp">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentBottom="true"
-                    android:orientation="vertical"
-                    android:layout_marginBottom="30dp">
+            <TextView
+                android:id="@+id/ttmChoice1TextView"
+                android:layout_width="190dp"
+                android:layout_height="57dp"
+                android:gravity="center"
+                android:text="Choice 1"
+                android:textColor="@color/colorWhite"
+                android:clickable="true"
+                android:textSize="25sp"
+                android:onClick="ttmChoicesButton_Click"
+                android:textAlignment="center"
+                android:background="@drawable/choices_normal"
+                android:tag="choice1"
+                android:fontFamily="@font/gargle_bd"/>
 
-                    <TextView
-                        android:id="@+id/ttmChoice1TextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="10dp"
-                        android:gravity="center"
-                        android:text="Choice 1"
-                        android:clickable="true"
-                        android:onClick="ttmChoicesButton_Click"
-                        android:textAlignment="center" />
+            <TextView
+                android:layout_width="190dp"
+                android:layout_height="57dp"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:text="Choice 2"
+                android:textColor="@color/colorWhite"
+                android:clickable="true"
+                android:layout_marginStart="40dp"
+                android:textSize="25sp"
+                android:onClick="ttmChoicesButton_Click"
+                android:id="@+id/ttmChoice2TextView"
+                android:layout_toEndOf="@id/ttmChoice1TextView"
+                android:background="@drawable/choices_normal"
+                android:tag="choice2"
+                android:fontFamily="@font/gargle_bd"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true"
-                        android:gravity="center"
-                        android:textAlignment="center"
-                        android:text="Choice 2"
-                        android:layout_marginBottom="10dp"
-                        android:clickable="true"
-                        android:onClick="ttmChoicesButton_Click"
-                        android:id="@+id/ttmChoice2TextView"/>
+            <TextView
+                android:layout_width="190dp"
+                android:layout_height="57dp"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:text="Choice 3"
+                android:textColor="@color/colorWhite"
+                android:clickable="true"
+                android:textSize="25sp"
+                android:onClick="ttmChoicesButton_Click"
+                android:id="@+id/ttmChoice3TextView"
+                android:layout_below="@id/ttmChoice1TextView"
+                android:background="@drawable/choices_normal"
+                android:tag="choice3"
+                android:fontFamily="@font/gargle_bd"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true"
-                        android:gravity="center"
-                        android:textAlignment="center"
-                        android:text="Choice 3"
-                        android:layout_marginBottom="10dp"
-                        android:clickable="true"
-                        android:onClick="ttmChoicesButton_Click"
-                        android:id="@+id/ttmChoice3TextView"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true"
-                        android:gravity="center"
-                        android:textAlignment="center"
-                        android:text="Choice 4"
-                        android:clickable="true"
-                        android:onClick="ttmChoicesButton_Click"
-                        android:id="@+id/ttmChoice4TextView"/>
-                </LinearLayout>
-            </RelativeLayout>
-        </TableRow>
-    </TableLayout>
-</RelativeLayout>
+            <TextView
+                android:layout_width="190dp"
+                android:layout_height="57dp"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:text="Choice 4"
+                android:clickable="true"
+                android:textSize="25sp"
+                android:textColor="@color/colorWhite"
+                android:layout_marginStart="40dp"
+                android:onClick="ttmChoicesButton_Click"
+                android:id="@+id/ttmChoice4TextView"
+                android:layout_toEndOf="@id/ttmChoice3TextView"
+                android:layout_below="@id/ttmChoice2TextView"
+                android:background="@drawable/choices_normal"
+                android:tag="choice4"
+                android:fontFamily="@font/gargle_bd"/>
+        </RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>

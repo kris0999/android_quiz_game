@@ -9,12 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".RegistrationActivity"
+        <activity android:name=".TrueOrFalseActivity"
             android:screenOrientation="userLandscape">
 
         </activity>
 
-        <activity android:name=".TrueOrFalseActivity"
+        <activity android:name=".RegistrationActivity"
             android:screenOrientation="userLandscape">
 
         </activity>
