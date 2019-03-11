@@ -4,44 +4,117 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CategoriesActivity">
+    tools:context=".CategoriesActivity"
+    android:background="@drawable/ingame_bg">
 
-    <LinearLayout
-        android:layout_width="250dp"
+    <ImageView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true">
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="20dp"
-            android:paddingTop="20dp"
-            android:text="True or False"
-            android:id="@+id/catTFButton"
-            android:tag="tf"
-            android:onClick="launchCategory_Click"/>
+        android:src="@drawable/cat_logo"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="70dp"/>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="20dp"
-            android:paddingTop="20dp"
-            android:text="The Other Me"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp"
-            android:id="@+id/catOtherButton"
-            android:tag="tom"
-            android:onClick="launchCategory_Click"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/home_btn"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:id="@+id/homeBtn"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp"/>
 
-        <Button
-            android:layout_width="match_parent"
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/info_btn"
+        android:layout_toLeftOf="@id/homeBtn"
+        android:layout_alignParentTop="true"
+        android:id="@+id/infoBtn"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/cat_ran"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/cat_kudo"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="50dp"/>
+
+    <RelativeLayout
+        android:layout_width="443dp"
+        android:layout_height="334dp"
+        android:background="@drawable/category_panel_bg"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="40dp"
+        android:id="@+id/categoryPanelView">
+
+        <LinearLayout
+            android:layout_width="342dp"
             android:layout_height="wrap_content"
-            android:paddingBottom="20dp"
-            android:paddingTop="20dp"
-            android:text="Talk To Me"
-            android:id="@+id/catTalkButton"
-            android:tag="ttm"
-            android:onClick="launchCategory_Click"/>
-    </LinearLayout>
+            android:orientation="vertical"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="40dp">
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="True or False"
+                android:id="@+id/catTFButton"
+                android:fontFamily="@font/gargle_bd"
+                android:background="@drawable/cat_btn_bg"
+                android:tag="tf"
+                android:textSize="22sp"
+                android:textColor="@color/colorWhite"
+                android:onClick="launchCategory_Click"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="The Other Me"
+                android:id="@+id/catOtherButton"
+                android:tag="tom"
+                android:fontFamily="@font/gargle_bd"
+                android:textSize="22sp"
+                android:textColor="@color/colorWhite"
+                android:background="@drawable/cat_btn_bg"
+                android:onClick="launchCategory_Click"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Talk To Me"
+                android:id="@+id/catTalkButton"
+                android:textSize="22sp"
+                android:textColor="@color/colorWhite"
+                android:tag="ttm"
+                android:fontFamily="@font/gargle_bd"
+                android:background="@drawable/cat_btn_bg"
+                android:onClick="launchCategory_Click"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Qiuz Type"
+        android:textColor="@color/colorWhite"
+        android:fontFamily="@font/gargle_bd"
+        android:layout_alignTop="@id/categoryPanelView"
+        android:layout_alignLeft="@id/categoryPanelView"
+        android:layout_marginTop="35dp"
+        android:layout_marginLeft="50dp"
+        android:textSize="22sp"/>
 </RelativeLayout>
