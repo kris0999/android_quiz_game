@@ -38,7 +38,7 @@ public class TalkToMeActivity extends AppCompatActivity {
             choice4View, scoreView, questionProgressView;
     private RelativeLayout ttmView;
     private ImageView character1, character2;
-    private Button pauseButton;
+    private ImageView pauseButton;
 
     private List<Conversation> _convo;
     private UserInfo _userInfo;
@@ -198,7 +198,7 @@ public class TalkToMeActivity extends AppCompatActivity {
         choice3View = findViewById(R.id.ttmChoice3TextView);
         choice4View = findViewById(R.id.ttmChoice4TextView);
         scoreView = findViewById(R.id.ttmScoreTextView);
-        questionProgressView = findViewById(R.id.ttmNumQuestionTextView);
+        questionProgressView = findViewById(R.id.ttfNumQuestionTextView);
         character1 = findViewById(R.id.ttmCharacter1ImageView);
         character2 = findViewById(R.id.ttmCharacter2ImageView);
         pauseButton = findViewById(R.id.ttmPauseButton);
@@ -259,8 +259,10 @@ public class TalkToMeActivity extends AppCompatActivity {
     private void evaluateScore(View view)
     {
         try {
-            if (view.getTag().equals(_currentConvoLine.answer))
-                scoreView.setText(String.format("%s", ++_score));
+            if (view.getTag().equals(_currentConvoLine.answer)) {
+                _score += 100;
+                scoreView.setText(String.format("%s", _score));
+            }
         }
         catch (NullPointerException e) {
             // do nothing
@@ -277,7 +279,7 @@ public class TalkToMeActivity extends AppCompatActivity {
         bundle.putInt("highScore", highScore.score);
         bundle.putInt("score", _score);
         bundle.putInt("difficulty", _difficulty);
-        bundle.putString("questions", _score + "/" + _totalQuestion);
+        bundle.putString("questions", (_score/100) + "/" + _totalQuestion);
         Intent intent = new Intent(this, GameResultsActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);
@@ -290,7 +292,8 @@ public class TalkToMeActivity extends AppCompatActivity {
     private void evaluateNextlevel()
     {
         if (_difficulty < 3) {
-            if (_score >= (_totalQuestion - 2)) {
+            if (_score == 1000) {
+                // 3 medal
                 if (_difficulty == _userInfo.talkToMeLevel) {
                     Toast.makeText(this, "New Level Unlocked", Toast.LENGTH_SHORT).show();
                     DBHelper.updateLevel(Category.TalkToMe, ++_difficulty, _dbHelper.getWritableDatabase());
