@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.anroid_quiz_game.TrueOrFalseActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/true_false_background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,34 +15,60 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@mipmap/ic_launcher"
-            android:id="@+id/tofLevelImageView"/>
-        <TextView
+            android:background="@drawable/banner_difficult"
+            android:id="@+id/tofLevelImageView"
+            android:layout_centerInParent="true"/>
+
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0"
-            android:textAlignment="center"
-            android:id="@+id/tofScoreTextView"
-            android:layout_weight="1"/>
-        <TextView
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textAlignment="center"
+                android:id="@+id/tofScoreTextView"
+                android:background="@drawable/score"
+                android:gravity="center_vertical"
+                android:layout_centerInParent="true"
+                android:paddingLeft="25dp"/>
+        </RelativeLayout>
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0/0"
-            android:textAlignment="center"
-            android:id="@+id/tofNumQuestionTextView"
-            android:layout_weight="1"/>
-        <TextView
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0/0"
+                android:textAlignment="center"
+                android:id="@+id/tofNumQuestionTextView"
+                android:background="@drawable/question"
+                android:gravity="center_vertical"
+                android:layout_centerInParent="true"
+                android:paddingLeft="25dp"/>
+        </RelativeLayout>
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0:00"
-            android:textAlignment="center"
-            android:id="@+id/tofTimerTextView"
-            android:layout_weight="1"/>
-        <Button
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0:00"
+                android:textAlignment="center"
+                android:id="@+id/tofTimerTextView"
+                android:background="@drawable/timer"
+                android:gravity="center_vertical"
+                android:layout_centerInParent="true"
+                android:paddingLeft="25dp"/>
+        </RelativeLayout>
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="||"
-            android:id="@+id/tofPauseButton"/>
+            android:id="@+id/tofPauseButton"
+            android:background="@drawable/pause"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -50,8 +77,8 @@
         android:orientation="horizontal">
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:background="@mipmap/ic_launcher"
+            android:layout_height="80dp"
+            android:background="@drawable/banner_correct"
             android:id="@+id/tofResultImageView"/>
     </LinearLayout>
     <LinearLayout
@@ -73,7 +100,8 @@
             android:layout_height="wrap_content"
             android:text=" > "
             android:id="@+id/tofNextButton"
-            android:onClick="tofNextButton_Click"/>
+            android:onClick="tofNextButton_Click"
+            android:background="@drawable/next"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -82,18 +110,20 @@
         android:gravity="center">
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:text=" TRUE "
             android:layout_marginRight="20dp"
             android:id="@+id/tofTrueButton"
-            android:onClick="tofTrueButton_Click"/>
+            android:onClick="tofTrueButton_Click"
+            android:background="@drawable/button_background"/>
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:text=" FALSE "
             android:layout_marginLeft="20dp"
             android:id="@+id/tofFalseButton"
-            android:onClick="tofFalseButton_Click"/>
+            android:onClick="tofFalseButton_Click"
+            android:background="@drawable/button_background"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -106,6 +136,7 @@
             android:textAlignment="center"
             android:id="@+id/tofTriviaTextView"
             android:layout_weight="1"
-            android:layout_gravity="top"/>
+            android:layout_gravity="top"
+            android:background="@drawable/banner_correct_trivia"/>
     </LinearLayout>
 </LinearLayout>
